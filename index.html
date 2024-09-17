@@ -1,158 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Random Number Quiz in Spanish</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e9ecef;
-            color: #343a40;
-            text-align: center;
-            padding: 20px;
-            margin: 0;
-        }
-
-        h1 {
-            color: #495057;
-            margin-bottom: 20px;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        #quiz-container {
-            margin: 20px auto;
-            width: 80%;
-            max-width: 500px;
-        }
-
-        .option {
-            display: block;
-            margin: 10px auto;
-            padding: 15px 25px;
-            background-color: #ffffff;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            max-width: 200px;
-            font-size: 1.2rem;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .option:hover {
-            background-color: #f8f9fa;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .option:active {
-            background-color: #e2e6ea;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        #result {
-            margin-top: 20px;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .correct {
-            color: #28a745;
-        }
-
-        .incorrect {
-            color: #dc3545;
-        }
-    </style>
-</head>
-<body>
-    <h1>Random Number Quiz in Spanish</h1>
-    <button onclick="generateQuiz()">Generate Quiz</button>
-    <button onclick="nextQuestion()">Next Question</button>
-    <div id="quiz-container"></div>
-    <p id="result"></p>
-
-    <script>
-        let correctAnswer = 0;
-
-        function generateQuiz() {
-            // Generate 3 random numbers between 1 and 100
-            const numbers = [];
-            correctAnswer = Math.floor(Math.random() * 100) + 1;
-            numbers.push(correctAnswer);
-
-            while (numbers.length < 3) {
-                const number = Math.floor(Math.random() * 100) + 1;
-                if (!numbers.includes(number)) {
-                    numbers.push(number);
-                }
-            }
-
-            // Shuffle the numbers
-            numbers.sort(() => Math.random() - 0.5);
-
-            // Display the quiz
-            const quizContainer = document.getElementById('quiz-container');
-            quizContainer.innerHTML = '';
-            numbers.forEach((number) => {
-                const option = document.createElement('div');
-                option.className = 'option';
-                option.textContent = number;
-                option.onclick = () => checkAnswer(number === correctAnswer);
-                quizContainer.appendChild(option);
-            });
-
-            // Read the correct answer aloud
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(correctAnswer.toString());
-                utterance.lang = 'es-ES';
-                window.speechSynthesis.speak(utterance);
-            } else {
-                alert('Speech synthesis API is not supported by this browser.');
-            }
-
-            // Reset the result display
-            document.getElementById('result').textContent = '';
-        }
-
-        function checkAnswer(isCorrect) {
-            const result = document.getElementById('result');
-            if (isCorrect) {
-                result.textContent = 'Correct! 🎉';
-                result.className = 'correct';
-            } else {
-                result.textContent = 'Incorrect. 😢';
-                result.className = 'incorrect';
-            }
-        }
-
-        function nextQuestion() {
-            generateQuiz(); // Generate the next question
-        }
-
-        // Generate the initial quiz question
-        generateQuiz();
-    </script>
-</body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>スペイン語の数字クイズ(1000~10000)</h1>
+    <button id="start-button" onclick="startQuiz()">開始する</button>
+    <div id="quiz-container" style="display:none;">
+      <button onclick="replayQuiz()">もう一度聞く</button>
+      <button onclick="nextQuestion()">次の質問</button>
+      <div id="quiz-content"></div>
+      <p id="result"></p>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
