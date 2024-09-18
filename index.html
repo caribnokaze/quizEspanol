@@ -8,13 +8,28 @@
   </head>
   <body>
     <h1>スペイン語の数字クイズ(1000~10000)</h1>
-    <button id="start-button" onclick="startQuiz()">開始する</button>
+    <p>5回解答すると正答率が表示されます</p>
+    
+    <!-- クイズの開始ボタン -->
+    <button id="start-button" class="center-button" onclick="startQuiz()">開始する</button>
+
+    <!-- クイズコンテナ -->
     <div id="quiz-container" style="display:none;">
-      <button onclick="replayQuiz()">もう一度聞く</button>
-      <button onclick="nextQuestion()">次の質問</button>
+      <!-- 現在の回答数を表示 -->
+      <p>現在の回答数: <span id="answer-count">0</span></p>
+      
+      <!-- クイズ内容を表示 -->
       <div id="quiz-content"></div>
+      
+      <!-- 結果を表示するエリア -->
       <p id="result"></p>
+      
+      <!-- もう一度聞くボタンと次の質問ボタン -->
+      <button id="replay-button" onclick="replayQuiz()">もう一度聞く</button>
+      <button id="next-button" onclick="nextQuestion()">次の質問</button>
     </div>
+
+    <!-- JavaScriptファイルの読み込み -->
     <script src="script.js"></script>
   </body>
 </html>
