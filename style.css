@@ -33,9 +33,9 @@ button {
   transition: background-color 0.3s, transform 0.2s;
 }
 
-.center-button {
+.start-button {
  display: block;
- margin: 0 auto;
+ margin: 20px auto 0;
 }
 
 button:hover {
