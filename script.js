@@ -155,25 +155,60 @@ function displayScore() {
 }
 
 function nextQuestion() {
-  playQuiz(); // 次のクイズを生成
+  const button = document.getElementById("next-button"); // ボタンのIDを指定
+  button.disabled = true; // ボタンを無効化
+
+  // 次の質問の処理をここで行う
+  console.log("次の質問に進みます...");
+
+  // クイズの生成処理
+  playQuiz();
+
+  // 3秒後にボタンを再び有効化
+  setTimeout(() => {
+    button.disabled = false; // 3秒後に再度ボタンを有効化
+  }, 3000); // 3000ミリ秒（3秒）
 }
 
+
 function replayQuiz() {
+  const button = document.getElementById("replay-button"); // ボタンのIDを指定
+  button.disabled = true; // ボタンを無効にする
   if ("speechSynthesis" in window && correctAnswer !== 0) {
     // 現在の答えの音声を再生成して再生
     const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
     newUtterance.lang = selectedLanguage;
+    // 音声の再生が終わった時にボタンを有効化
+    newUtterance.onend = function () {
+      button.disabled = false; // 音声再生が完了したらボタンを再有効化
+    };
     window.speechSynthesis.speak(newUtterance);
+  } else {
+    console.log(
+      "音声合成はサポートされていないか、正しい値が設定されていません。"
+    );
+    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
   }
 }
 
 function slowReplayQuiz() {
+  const button = document.getElementById("slow-read-button"); // ボタンのIDを指定
+  button.disabled = true; // ボタンを無効にする
   if ("speechSynthesis" in window && correctAnswer !== 0) {
     // 現在の答えの音声を再生成してゆっくり再生
     const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
     newUtterance.lang = selectedLanguage;
+    // 音声の再生が終わった時にボタンを有効化
+    newUtterance.onend = function () {
+      button.disabled = false; // 音声再生が完了したらボタンを再有効化
+    };
     newUtterance.rate = 0.5; // 読み上げ速度を遅くする
     window.speechSynthesis.speak(newUtterance);
+  } else {
+    console.log(
+      "音声合成はサポートされていないか、正しい値が設定されていません。"
+    );
+    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
   }
 }
 
