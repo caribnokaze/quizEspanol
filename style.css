@@ -109,3 +109,21 @@ button:active {
 .number-input input {
   width: 100px; /* 入力フィールドの幅を指定 */
 }
+
+button.next-button {
+  border: 2px solid black; /* 枠線の太さと色を設定 */
+  padding: 10px 20px; /* ボタンの内側の余白 */
+  background-color: #007bff; /* 背景色 */
+  cursor: pointer; /* マウスオーバー時のカーソル */
+}
+
+button.next-button:hover {
+  background-color: #0056b3;
+}
+
+.language-container {
+  display: flex;
+  flex-direction: column; /* 縦方向に配置 */
+  align-items: center; /* 中央揃え */
+  margin-top: 20px; /* 上部にスペースを追加 */
+}

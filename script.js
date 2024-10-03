@@ -6,6 +6,27 @@ let answerCount = 0;
 let isAnswering = false;
 let minNumber;
 let maxNumber;
+let selectedLanguage = "en-US"; // デフォルトは英語
+
+function updateLanguage() {
+  const languageSelect = document.getElementById("language-select");
+  switch (languageSelect.value) {
+    case "english":
+      selectedLanguage = "en-US"; // 英語
+      break;
+    case "spanish":
+      selectedLanguage = "es-ES"; // スペイン語
+      break;
+    case "chinese":
+      selectedLanguage = "zh-CN"; // 中国語
+      break;
+    case "vietnamese":
+      selectedLanguage = "vi-VN"; // ベトナム語
+      break;
+    default:
+      selectedLanguage = "en-US"; // デフォルトは英語
+  }
+}
 
 function startQuiz() {
   loadQuizState(); // クッキーから状態を読み込む
@@ -26,8 +47,10 @@ function startQuiz() {
     correctAnswers = 0; // 初期化
   }
 
-  $("#start-button").css("display", "none");
-  $("#continue-message").css("display", "none");
+  $("#start-button, #continue-message, #language-label, #language-select").css(
+    "display",
+    "none"
+  );
   document.getElementById("quiz-container").style.display = "block";
   document.getElementById("answer-count").textContent = answerCount; // カウンターをリセット
   document.getElementById("result").textContent = ""; // 結果エリアをクリア
@@ -75,7 +98,7 @@ function playQuiz() {
     // 正しい答えを音声で読み上げる
     if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(correctAnswer.toString());
-      utterance.lang = "es-ES";
+      utterance.lang = selectedLanguage; // 選択された言語を設定
       window.speechSynthesis.speak(utterance);
     } else {
       alert("このブラウザは音声合成APIをサポートしていません。");
@@ -136,36 +159,21 @@ function nextQuestion() {
 }
 
 function replayQuiz() {
-  const button = document.getElementById("replay-button"); // ボタンのIDを指定
-  button.disabled = true; // ボタンを無効にする
   if ("speechSynthesis" in window && correctAnswer !== 0) {
     // 現在の答えの音声を再生成して再生
     const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
-    newUtterance.lang = "es-ES";
+    newUtterance.lang = selectedLanguage;
     window.speechSynthesis.speak(newUtterance);
-    // 音声合成が終了した後にボタンを再び有効にする
-    newUtterance.onend = function () {
-      button.disabled = false; // ボタンを再び有効にする
-    };
-  } else {
-    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
   }
 }
 
 function slowReplayQuiz() {
-  const button = document.getElementById("slow-read-button"); // ボタンのIDを指定
-  button.disabled = true; // ボタンを無効にする
   if ("speechSynthesis" in window && correctAnswer !== 0) {
     // 現在の答えの音声を再生成してゆっくり再生
     const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
-    newUtterance.lang = "es-ES";
+    newUtterance.lang = selectedLanguage;
     newUtterance.rate = 0.5; // 読み上げ速度を遅くする
     window.speechSynthesis.speak(newUtterance);
-    newUtterance.onend = function () {
-      button.disabled = false; // ボタンを再び有効にする
-    };
-  } else {
-    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
   }
 }
 
@@ -182,6 +190,12 @@ function restartQuiz() {
   document.getElementById("quiz-container").style.display = "none";
   document.getElementById("result").textContent = "";
   document.getElementById("answer-count").textContent = "0"; // カウンターをリセット
+
+  // 言語選択を表示
+  document.getElementById("language-label").style.display = "block"; // 言語ラベルを表示
+  document.getElementById("language-select").style.display = "block"; // 言語セレクトを表示
+
+  playQuiz(); // クイズを開始
 }
 
 // localStorageにデータを保存する関数を作成
