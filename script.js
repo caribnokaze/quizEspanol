@@ -220,6 +220,7 @@ function restartQuiz() {
   answerCount = 0;
   correctAnswers = 0;
   totalQuestions = 0;
+  correctAnswer = 0; // 追加: correctAnswerをリセット
 
   document.getElementById("start-button").style.display = "block";
   document.getElementById("quiz-container").style.display = "none";
@@ -229,8 +230,6 @@ function restartQuiz() {
   // 言語選択を表示
   document.getElementById("language-label").style.display = "block"; // 言語ラベルを表示
   document.getElementById("language-select").style.display = "block"; // 言語セレクトを表示
-
-  playQuiz(); // クイズを開始
 }
 
 // localStorageにデータを保存する関数を作成
