@@ -7,25 +7,37 @@ let isAnswering = false;
 let minNumber;
 let maxNumber;
 let selectedLanguage = "en-US"; // デフォルトは英語
+// 言語ごとのメッセージを定義
+const messages = {
+  en: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" },
+  es: { correct: "¡Correcto! 🎉", incorrect: "Incorrecto. 😢" },
+  zh: { correct: "正确! 🎉", incorrect: "错误. 😢" },
+  vi: { correct: "Chính xác! 🎉", incorrect: "Không chính xác. 😢" }
+};
 
 function updateLanguage() {
   const languageSelect = document.getElementById("language-select");
   switch (languageSelect.value) {
     case "english":
-      selectedLanguage = "en-US"; // 英語
+      selectedLanguage = "en"; // 英語
       break;
     case "spanish":
-      selectedLanguage = "es-ES"; // スペイン語
+      selectedLanguage = "es"; // スペイン語
       break;
     case "chinese":
-      selectedLanguage = "zh-CN"; // 中国語
+      selectedLanguage = "zh"; // 中国語
       break;
     case "vietnamese":
-      selectedLanguage = "vi-VN"; // ベトナム語
+      selectedLanguage = "vi"; // ベトナム語
       break;
     default:
-      selectedLanguage = "en-US"; // デフォルトは英語
+      selectedLanguage = "en"; // デフォルトは英語
   }
+}
+
+// 言語を選択する関数
+function setLanguage(language) {
+  selectedLanguage = language;
 }
 
 function startQuiz() {
@@ -112,6 +124,8 @@ function playQuiz() {
   }
 }
 
+
+
 function checkAnswer(isCorrect) {
   const result = document.getElementById("result");
   totalQuestions++;
@@ -120,10 +134,10 @@ function checkAnswer(isCorrect) {
 
   if (isCorrect) {
     correctAnswers++;
-    result.textContent = "¡Correcto! 🎉";
+    result.textContent = messages[selectedLanguage].correct;
     result.className = "correct";
   } else {
-    result.textContent = "Incorrecto. 😢";
+    result.textContent = messages[selectedLanguage].incorrect;
     result.className = "incorrect";
   }
 
