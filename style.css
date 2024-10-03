@@ -34,8 +34,8 @@ button {
 }
 
 .start-button {
- display: block;
- margin: 20px auto 0;
+  display: block;
+  margin: 20px auto 0;
 }
 
 button:hover {
@@ -88,4 +88,24 @@ button:active {
 
 .incorrect {
   color: #dc3545;
+}
+
+.number-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 中央揃え */
+}
+
+.number-input div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px; /* 各行の間にスペースを追加 */
+}
+
+.number-input label {
+  margin-right: 8px; /* ラベルと入力フィールドの間にスペースを追加 */
+}
+
+.number-input input {
+  width: 100px; /* 入力フィールドの幅を指定 */
 }
