@@ -136,21 +136,36 @@ function nextQuestion() {
 }
 
 function replayQuiz() {
+  const button = document.getElementById("replay-button"); // ボタンのIDを指定
+  button.disabled = true; // ボタンを無効にする
   if ("speechSynthesis" in window && correctAnswer !== 0) {
     // 現在の答えの音声を再生成して再生
     const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
     newUtterance.lang = "es-ES";
     window.speechSynthesis.speak(newUtterance);
+    // 音声合成が終了した後にボタンを再び有効にする
+    newUtterance.onend = function () {
+      button.disabled = false; // ボタンを再び有効にする
+    };
+  } else {
+    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
   }
 }
 
 function slowReplayQuiz() {
+  const button = document.getElementById("slow-read-button"); // ボタンのIDを指定
+  button.disabled = true; // ボタンを無効にする
   if ("speechSynthesis" in window && correctAnswer !== 0) {
     // 現在の答えの音声を再生成してゆっくり再生
     const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
     newUtterance.lang = "es-ES";
     newUtterance.rate = 0.5; // 読み上げ速度を遅くする
     window.speechSynthesis.speak(newUtterance);
+    newUtterance.onend = function () {
+      button.disabled = false; // ボタンを再び有効にする
+    };
+  } else {
+    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
   }
 }
 
