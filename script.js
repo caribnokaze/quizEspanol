@@ -6,13 +6,13 @@ let answerCount = 0;
 let isAnswering = false;
 let minNumber;
 let maxNumber;
-let selectedLanguage = "en-US"; // デフォルトは英語
+let selectedLanguage = "en"; // デフォルトは英語
 // 言語ごとのメッセージを定義
 const messages = {
   en: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" },
   es: { correct: "¡Correcto! 🎉", incorrect: "Incorrecto. 😢" },
   zh: { correct: "正确! 🎉", incorrect: "错误. 😢" },
-  vi: { correct: "Chính xác! 🎉", incorrect: "Không chính xác. 😢" }
+  vi: { correct: "Chính xác! 🎉", incorrect: "Không chính xác. 😢" },
 };
 
 function updateLanguage() {
@@ -124,8 +124,6 @@ function playQuiz() {
   }
 }
 
-
-
 function checkAnswer(isCorrect) {
   const result = document.getElementById("result");
   totalQuestions++;
@@ -140,6 +138,8 @@ function checkAnswer(isCorrect) {
     result.textContent = messages[selectedLanguage].incorrect;
     result.className = "incorrect";
   }
+  // このタイミングで結果を表示する
+  document.getElementById("result").style.display = "block";
 
   // クッキーに現在の状態を保存
   saveQuizState();
@@ -169,6 +169,8 @@ function displayScore() {
 }
 
 function nextQuestion() {
+  document.getElementById("result").style.display = "none"; // 前回の結果を隠す
+
   const button = document.getElementById("next-button"); // ボタンのIDを指定
   button.disabled = true; // ボタンを無効化
 
@@ -183,7 +185,6 @@ function nextQuestion() {
     button.disabled = false; // 3秒後に再度ボタンを有効化
   }, 3000); // 3000ミリ秒（3秒）
 }
-
 
 function replayQuiz() {
   const button = document.getElementById("replay-button"); // ボタンのIDを指定
