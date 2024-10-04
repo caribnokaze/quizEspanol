@@ -244,6 +244,11 @@ function restartQuiz() {
   // 言語選択を表示
   document.getElementById("language-label").style.display = "block"; // 言語ラベルを表示
   document.getElementById("language-select").style.display = "block"; // 言語セレクトを表示
+
+  // 「次の質問」ボタンのテキストと機能をリセット
+  const nextButton = document.getElementById("next-button");
+  nextButton.textContent = "次の質問";
+  nextButton.onclick = nextQuestion;
 }
 
 // localStorageにデータを保存する関数を作成
