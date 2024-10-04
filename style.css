@@ -127,3 +127,10 @@ button.next-button:hover {
   align-items: center; /* 中央揃え */
   margin-top: 20px; /* 上部にスペースを追加 */
 }
+
+#result {
+  display: block; /* メッセージが表示されるように設定 */
+  text-align: center;
+  font-size: 1.5rem; /* スマホでも見やすいようにフォントサイズを調整 */
+  margin-top: 10px;
+}
