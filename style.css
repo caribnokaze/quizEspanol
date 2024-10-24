@@ -7,11 +7,26 @@ body {
   margin: 0;
 }
 
-h1 {
+.header {
+  text-align: center; /* h1を中央揃え */
+  position: relative; /* 絶対配置の基準を作る */
+}
+
+.header h1 {
   color: #495057;
   margin-bottom: 20px;
   font-size: 2rem;
   font-weight: 700;
+  position: relative; /* アイコンを隣に配置するため相対位置に */
+}
+
+.header i {
+  position: absolute; /* 絶対配置でアイコンを配置 */
+  top: 50%; /* h1の中央に合わせる */
+  left: calc(50% + 200px);
+  transform: translateY(-50%); /* アイコンを縦方向に中央揃え */
+  cursor: pointer; /* アイコンをクリック可能にする */
+  font-size: 2rem; /* アイコンを大きくする */
 }
 
 p {
@@ -31,11 +46,18 @@ button {
   cursor: pointer;
   margin: 10px;
   transition: background-color 0.3s, transform 0.2s;
+  cursor: pointer; /* アイコンをクリック可能にする */
 }
 
-.start-button {
+.start-button, .save-button {
   display: block;
   margin: 20px auto 0;
+}
+
+.button-container {
+  display: flex; /* Flexboxを使用 */
+  justify-content: center; /* 水平中央揃え */
+  align-items: center; /* 垂直方向も中央揃え（必要に応じて） */ /* 上部にスペースを追加 */
 }
 
 button:hover {
@@ -98,27 +120,30 @@ button:active {
 
 .number-input div {
   display: flex;
+  justify-content: center; /* 水平方向に中央揃え */
   align-items: center;
-  margin-bottom: 8px; /* 各行の間にスペースを追加 */
+  margin-bottom: 10px; /* 各行の間にスペースを追加 */
 }
 
 .number-input label {
+  display: block; /* ラベルをブロック要素にして改行を入れる */
   margin-right: 8px; /* ラベルと入力フィールドの間にスペースを追加 */
 }
 
 .number-input input {
   width: 100px; /* 入力フィールドの幅を指定 */
+  font-size: 25px;
 }
 
-button.next-button {
-  border: 2px solid black; /* 枠線の太さと色を設定 */
-  padding: 10px 20px; /* ボタンの内側の余白 */
-  background-color: #007bff; /* 背景色 */
-  cursor: pointer; /* マウスオーバー時のカーソル */
+.hide-spinner {
+  width: 100px; /* 入力フィールドの幅を指定 */
+  font-size: 25px; /* フォントサイズを指定 */
 }
 
-button.next-button:hover {
-  background-color: #0056b3;
+
+.language-select {
+  width: 150px; /* 入力フィールドの幅を指定 */
+  font-size: 25px;
 }
 
 .language-container {
@@ -126,4 +151,93 @@ button.next-button:hover {
   flex-direction: column; /* 縦方向に配置 */
   align-items: center; /* 中央揃え */
   margin-top: 20px; /* 上部にスペースを追加 */
+  margin-bottom: 20px; /* 各行の間にスペースを追加 */
 }
+
+.language-select {
+  cursor: pointer; /* ポインターを表示 */
+}
+
+.number-input-field {
+  cursor: pointer; /* ポインターを表示 */
+}
+
+#language-label {
+  margin-bottom: 10px; /* 下に20pxのスペースを追加 */
+}
+
+.quiz-type-option, .timer-seconds-choice {
+  display: flex;
+  justify-content: center; /* 水平方向に中央揃え */
+  align-items: center;
+}
+
+.number-input {
+  display: block; /* ブロック要素として表示 */
+  margin-bottom: 10px; /* 各行の間にスペースを追加 */
+}
+
+.quiz-type-label {
+  display: block; /* ブロック要素として表示 */
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.type-audio-input {
+  cursor: pointer; /* アイコンをクリック可能にする */
+}
+
+.timer-type-label {
+  display: block; /* ブロック要素として表示 */
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.timer-options-container, .timer-seconds-options {
+  display: flex;
+  justify-content: center; /* オプション間のスペース調整 */
+  margin-bottom: 10px;
+}
+
+.without-timer-choice-option,
+.with-timer-choice-option, .timer-five-seconds-option, .timer-ten-seconds-option, .timer-fifteen-seconds-option {
+  display: flex; /* 横並びにする */
+  align-items: center; /* 縦方向に中央揃え */
+  margin-right: 10px; /* 右側にスペースを追加 */
+}
+
+.with-timer-choice-option {
+  margin-left: 10px; /* 左側にもスペースを追加 */
+}
+
+.timer-seconds-container-label {
+  display: block; /* ブロック要素として表示 */
+  margin-bottom: 10px; /* 上下のマージンを調整 */
+}
+
+/* ユーザー回答フィールドのスピンボタンを非表示 */
+#user-answer {
+  -moz-appearance: textfield; /* Firefox */
+  appearance: textfield; /* 標準プロパティ */
+}
+
+#user-answer::-webkit-outer-spin-button,
+#user-answer::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+  margin: 0;
+}
+
+/* スピンボタンを表示させるスタイル */
+input[type="number"].show-spinner {
+  -moz-appearance: textfield; /* Firefox */
+  -webkit-appearance: auto; /* Chrome */
+  appearance: auto; /* 標準 */
+}
+
+/* スピンボタンを非表示にするスタイル */
+input[type="number"].hide-spinner::-webkit-inner-spin-button,
+input[type="number"].hide-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
