@@ -1,122 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Number Quiz in Spanish</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="jquery-3.7.1.min.js"></script>
+    <link
+      href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Random Number Quiz in Spanish</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="jquery-3.7.1.min.js"></script>
-  <link href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" rel="stylesheet" />
-</head>
-
-<body>
-  <div class="header">
-    <h1 id="header-title">外国語の数字クイズ</h1>
-    <i class="fa-solid fa-gear" id="setting-icon"></i>
-  </div>
-  <p id="info-message">5回解答すると正答率が表示されます</p>
-  <p id="continue-message">(前回途中だった場合は続きから開始されます)</p>
-  <div class="language-container">
-    <label id="language-label" for="language-select" style="display: none">【選択中の言語】</label>
-    <span id="selected-language">英語</span>
-    <select id="language-select" class="language-select" style="display: none" onchange="updateLanguage()">
-      <option value="english">英語</option>
-      <option value="spanish">スペイン語</option>
-      <option value="chinese">中国語</option>
-      <option value="vietnamese">ベトナム語</option>
-    </select>
-  </div>
-
-  <div class="number-input">
-    <label class="number-input" style="display: none">【数字の範囲】</label>
-    <div class="min-number-container">
-      <label class="number-label" for="min-number">最小値</label>
-      <span id="min-input-number">1</span>
-      <input type="number" id="min-number" value="1" class="number-input-field" style="display: none" />
+  <body>
+    <div class="header">
+      <h1 id="header-title">外国語の数字クイズ</h1>
+      <i class="fa-solid fa-gear" id="setting-icon"></i>
     </div>
-    <div class="max-number-container">
-      <label class="number-label" for="max-number">最大値</label>
-      <span id="max-input-number">10000</span>
-      <input type="number" id="max-number" value="10000" class="number-input-field" style="display: none" />
+    <div id="info-message">
+      <p>5回解答すると正答率が表示されます</p>
+      <p>(前回途中だった場合は続きから開始されます)</p>
     </div>
-  </div>
-
-  <div id="quiz-type" style="display: none">
-    <label class="quiz-type-label">【回答タイプ】</label>
-    <div class="quiz-type-options-container">
-      <div class="quiz-type-option">
-        <label for="type-multiple-choice">数字を3つから選ぶ</label><br />
-        <input type="radio" class="type-audio-input" id="type-multiple-choice" name="quizType" value="multiple-choice"
-          checked />
-      </div>
-      <div class="quiz-type-option">
-        <label for="type-audio-input">数字を直接入力</label><br />
-        <input type="radio" class="type-audio-input" id="type-audio-input" name="quizType" value="audio-input" />
-      </div>
+    <div class="language-container">
+      <label id="language-label" for="language-select" style="display: none"
+        >【選択中の言語】</label
+      >
+      <span id="selected-language">英語</span>
+      <select
+        id="language-select"
+        class="language-select"
+        style="display: none"
+        onchange="updateLanguage()"
+      >
+        <option value="english">英語</option>
+        <option value="spanish">スペイン語</option>
+        <option value="chinese">中国語</option>
+        <option value="vietnamese">ベトナム語</option>
+      </select>
     </div>
-  </div>
 
-  <div id="timer-setting" style="display: none">
-    <label class="timer-type-label">【タイマー有無】</label>
-    <div class="timer-options-container">
-      <div class="without-timer-choice-option">
-        <label for="without-timer">なし</label><br />
-        <input type="radio" class="timer-choice" id="without-timer" name="timerChoice" value="no-timer" checked />
+    <div class="number-input">
+      <label class="number-input" style="display: none">【数字の範囲】</label>
+      <div class="min-number-container">
+        <label class="number-label" for="min-number">最小値</label>
+        <span id="min-input-number">1</span>
+        <input
+          type="number"
+          id="min-number"
+          value="1"
+          class="number-input-field"
+          style="display: none"
+        />
       </div>
-      <div class="with-timer-choice-option">
-        <label for="with-timer">あり</label><br />
-        <input type="radio" class="timer-choice" id="with-timer" name="timerChoice" value="yes-timer" />
+      <div class="max-number-container">
+        <label class="number-label" for="max-number">最大値</label>
+        <span id="max-input-number">10000</span>
+        <input
+          type="number"
+          id="max-number"
+          value="10000"
+          class="number-input-field"
+          style="display: none"
+        />
       </div>
     </div>
-  </div>
-  <div id="timer-seconds-container" class="timer-seconds-container" style="display: none">
-    <label class="timer-seconds-container-label" for="timer-seconds-choice">↓時間を選択してください↓</label>
-    <div class="timer-seconds-options">
-      <div class="timer-five-seconds-option">
-        <label for="timer-seconds-choice">5秒</label><br />
-        <input type="radio" class="five-seconds-choice" id="five-seconds" name="timerSeconds" value="5" />
-      </div>
-      <div class="timer-ten-seconds-option">
-        <label for="timer-ten-seconds">10秒</label><br />
-        <input type="radio" class="timer-seconds-choice" id="ten-seconds" name="timerSeconds" value="10" />
-      </div>
-      <div class="timer-fifteen-seconds-option">
-        <label for="timer-fifteen-seconds-option">15秒</label><br />
-        <input type="radio" class="timer-seconds-choice" id="fifteen-seconds" name="timerSeconds" value="15" />
+
+    <div id="quiz-type" style="display: none">
+      <label class="quiz-type-label">【回答タイプ】</label>
+      <div class="quiz-type-options-container">
+        <div class="quiz-type-option">
+          <label for="type-multiple-choice">数字を3つから選ぶ</label><br />
+          <input
+            type="radio"
+            class="type-audio-input"
+            id="type-multiple-choice"
+            name="quizType"
+            value="multiple-choice"
+            checked
+          />
+        </div>
+        <div class="quiz-type-option">
+          <label for="type-audio-input">数字を直接入力</label><br />
+          <input
+            type="radio"
+            class="type-audio-input"
+            id="type-audio-input"
+            name="quizType"
+            value="audio-input"
+          />
+        </div>
       </div>
     </div>
-  </div>
-  <!-- クイズの開始ボタン -->
-  <button id="start-button" class="start-button" onclick="startQuiz()">
-    開始する
-  </button>
-  <!-- 設定画面内の保存ボタン -->
-  <button id="save-button" class="save-button" style="display: none">
-    保存
-  </button>
 
-  <!-- クイズコンテナ -->
-  <div id="quiz-container" style="display: none">
-    <!-- 現在の回答数を表示 -->
-    <p>現在の回答数: <span id="answer-count">0</span></p>
-    <!-- タイマーを表示 -->
-    <div id="timer" style="font-size: 20px; color: red; text-align: right"></div>
-    <!-- クイズ内容を表示 -->
-    <div id="quiz-content"></div>
-    <!-- 結果を表示するエリア -->
-    <p id="result"></p>
-    
-    <!-- もう一度聞くボタンと次の質問ボタン -->
-    <button id="replay-button" onclick="replayQuiz()">もう一度聞く</button>
-    <button id="slow-read-button" onclick="slowReplayQuiz()">ゆっくりもう一度聞く</button>
-    <div class="button-container">
-    <button id="restart-button" class="restart-button" onclick="restartQuiz()">最初から</button>
+    <div id="timer-setting" style="display: none">
+      <label class="timer-type-label">【タイマー有無】</label>
+      <div class="timer-options-container">
+        <div class="without-timer-choice-option">
+          <label for="without-timer">なし</label><br />
+          <input
+            type="radio"
+            class="timer-choice"
+            id="without-timer"
+            name="timerChoice"
+            value="no-timer"
+            checked
+          />
+        </div>
+        <div class="with-timer-choice-option">
+          <label for="with-timer">あり</label><br />
+          <input
+            type="radio"
+            class="timer-choice"
+            id="with-timer"
+            name="timerChoice"
+            value="yes-timer"
+          />
+        </div>
+      </div>
     </div>
-  </div>
+    <div
+      id="timer-seconds-container"
+      class="timer-seconds-container"
+      style="display: none"
+    >
+      <label class="timer-seconds-container-label" for="timer-seconds-choice"
+        >↓時間を選択してください↓</label
+      >
+      <div class="timer-seconds-options">
+        <div class="timer-five-seconds-option">
+          <label for="timer-seconds-choice">5秒</label><br />
+          <input
+            type="radio"
+            class="five-seconds-choice"
+            id="five-seconds"
+            name="timerSeconds"
+            value="5"
+          />
+        </div>
+        <div class="timer-ten-seconds-option">
+          <label for="timer-ten-seconds">10秒</label><br />
+          <input
+            type="radio"
+            class="timer-seconds-choice"
+            id="ten-seconds"
+            name="timerSeconds"
+            value="10"
+          />
+        </div>
+        <div class="timer-fifteen-seconds-option">
+          <label for="timer-fifteen-seconds-option">15秒</label><br />
+          <input
+            type="radio"
+            class="timer-seconds-choice"
+            id="fifteen-seconds"
+            name="timerSeconds"
+            value="15"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- クイズの開始ボタン -->
+    <button id="start-button" class="start-button" onclick="startQuiz()">
+      開始する
+    </button>
+    <!-- 設定画面内の保存ボタン -->
+    <button id="save-button" class="save-button" style="display: none">
+      保存
+    </button>
 
-  <!-- JavaScriptファイルの読み込み -->
-  <script src="script.js"></script>
-</body>
+    <!-- クイズコンテナ -->
+    <div id="quiz-container" style="display: none">
+      <!-- 現在の回答数を表示 -->
+      <p>現在の回答数: <span id="answer-count">0</span></p>
+      <!-- タイマーを表示 -->
+      <div
+        id="timer"
+        style="font-size: 20px; color: red; text-align: right"
+      ></div>
+      <!-- クイズ内容を表示 -->
+      <div id="quiz-content"></div>
+      <!-- 結果を表示するエリア -->
+      <p id="result"></p>
 
+      <!-- もう一度聞くボタンと次の質問ボタン -->
+      <button id="replay-button" onclick="replayQuiz()">もう一度聞く</button>
+      <button id="slow-read-button" onclick="slowReplayQuiz()">
+        ゆっくりもう一度聞く
+      </button>
+      <div class="button-container">
+        <button
+          id="restart-button"
+          class="restart-button"
+          onclick="restartQuiz()"
+        >
+          最初から
+        </button>
+      </div>
+    </div>
+
+    <!-- JavaScriptファイルの読み込み -->
+    <script src="script.js"></script>
+  </body>
 </html>
