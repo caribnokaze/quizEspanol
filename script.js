@@ -152,10 +152,20 @@ function startQuiz() {
 
   quizScreenVisible();
 
-  document.getElementById("quiz-container").style.display = "block";
-  document.getElementById("answer-count").textContent = answerCount; // カウンターをリセット
-  document.getElementById("result").textContent = ""; // 結果エリアをクリア
-  playQuiz(); // 引数を渡さずに初回のクイズを生成
+  updateAnswerCount();
+  setQuizResult("");
+
+  playQuiz();
+}
+
+// クイズ結果を設定する
+function setQuizResult(result) {
+  document.getElementById("result").textContent = result;
+}
+
+// 現在の回答数を画面表示させる
+function updateAnswerCount() {
+  document.getElementById("answer-count").textContent = answerCount;
 }
 
 // 最後のクイズが終了している
@@ -172,42 +182,34 @@ function initializeQuiz() {
 
 // クイズ設定画面に切り替える関数
 function quizSettingScreenVisible() {
-  $(
-    "#language-label, #language-select, #type-multiple-choice, #type-audio-input"
-  ).css("display", "block");
-  $("#quiz-container").css("display", "none");
-  $("#start-button").css("display", "none");
-  $("#restart-button").css("display", "none");
+  $("#language-container").show();
+  $("#quiz-container").hide();
+  $("#start-button").hide();
+  $("#restart-button").hide();
 }
 
 // クイズ開始画面に切り替える関数
 function quizStartScreenVisible() {
-  $(
-    "#language-label, #language-select, #type-multiple-choice, #type-audio-input"
-  ).css("display", "none");
-  $("#quiz-container").css("display", "none");
-  $("#start-button").css("display", "block");
-  $("#restart-button").css("display", "none");
+  $("#language-container").hide();
+  $("#quiz-container").hide();
+  $("#start-button").show();
+  $("#restart-button").hide();
 }
 
 // クイズ画面に切り替える関数
 function quizScreenVisible() {
-  $(
-    "#language-label, #language-select, #type-multiple-choice, #type-audio-input"
-  ).css("display", "none");
-  $("#quiz-container").css("display", "block");
-  $("#start-button").css("display", "none");
-  $("#restart-button").css("display", "none");
+  $("#language-container").hide();
+  $("#quiz-container").show();
+  $("#start-button").hide();
+  $("#restart-button").hide();
 }
 
 // クイズ結果画面に切り替える関数
 function quizResultScreenVisible() {
-  $(
-    "#language-label, #language-select, #type-multiple-choice, #type-audio-input"
-  ).css("display", "none");
-  $("#quiz-container").css("display", "block");
-  $("#start-button").css("display", "none");
-  $("#restart-button").css("display", "block");
+  $("#language-container").hide();
+  $("#quiz-container").show();
+  $("#start-button").hide();
+  $("#restart-button").show();
 }
 
 function playQuiz() {
@@ -278,7 +280,7 @@ function playQuiz() {
       }
 
       // 結果表示をリセット
-      document.getElementById("result").textContent = "";
+      setQuizResult("");
     } else if (quizType === "audio-input") {
       // 音声を聞いて数字を直接入力するクイズの場合
       correctAnswer =
@@ -321,7 +323,7 @@ function playQuiz() {
       quizContent.appendChild(submitButton);
 
       // 結果表示をリセット
-      document.getElementById("result").textContent = "";
+      setQuizResult("");
     } else {
       // クイズが終了したら正答率を表示
       displayScore();
@@ -363,9 +365,7 @@ function checkAnswer(isCorrect) {
 function displayScore() {
   //正答率を計算して表示
   const score = (correctAnswers / maxQuestions) * 100;
-  const result = document.getElementById("result");
-  result.textContent = `クイズ終了！正答率は ${score}% です。`;
-  result.className = "score";
+  setQuizResult(`クイズ終了！正答率は ${score}% です。`);
 
   $("#restart-button").css("display", "block");
   $("#restart-button").off("click").on("click", restartQuiz);
@@ -409,35 +409,6 @@ function slowReplayQuiz() {
       "音声合成はサポートされていないか、正しい値が設定されていません。"
     );
     button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
-  }
-}
-
-function restartQuiz() {
-  // localStorageのデータをクリア
-  localStorage.removeItem("answerCount");
-  localStorage.removeItem("correctAnswers");
-  localStorage.removeItem("totalQuestions");
-
-  // 初期状態に戻す
-  answerCount = 0;
-  correctAnswers = 0;
-  totalQuestions = 0;
-  correctAnswer = 0; // correctAnswerをリセット
-
-  // 必要な要素の表示状態をリセット
-  $(
-    "#type-multiple-choice, #type-audio-input, #setting-icon, #info-message, #language-label, #start-button, #min-input-number, #max-input-number, #selected-language"
-  ).css("display", "block");
-
-  // クイズ関連の要素を非表示にする
-  document.getElementById("quiz-container").style.display = "none";
-  document.getElementById("result").textContent = "";
-  document.getElementById("answer-count").textContent = "0"; // カウンターをリセット
-
-  // 入力フィールドのリセット
-  const userInput = document.getElementById("user-answer");
-  if (userInput) {
-    userInput.value = ""; // 入力フィールドを空に
   }
 }
 
