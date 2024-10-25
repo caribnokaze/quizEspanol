@@ -104,24 +104,14 @@
     <div id="timer" style="font-size: 20px; color: red; text-align: right"></div>
     <!-- クイズ内容を表示 -->
     <div id="quiz-content"></div>
-    <!-- 数字の直接入力フィールド、半角数字以外を削除 -->
-    <input type="number" id="user-answer" placeholder="半角数字を入力" class="hide-spinner" pattern="[0-9]*" inputmode="numeric"
-      oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-    />
-    <!-- 送信ボタン -->
-    <button id="submit-answer">回答を送信</button>
     <!-- 結果を表示するエリア -->
     <p id="result"></p>
-
+    
     <!-- もう一度聞くボタンと次の質問ボタン -->
     <button id="replay-button" onclick="replayQuiz()">もう一度聞く</button>
-    <button id="slow-read-button" onclick="slowReplayQuiz()">
-      ゆっくりもう一度聞く
-    </button>
+    <button id="slow-read-button" onclick="slowReplayQuiz()">ゆっくりもう一度聞く</button>
     <div class="button-container">
-      <button id="restart-button" class="restart-button" onclick="restartQuiz()">
-        最初から
-      </button>
+    <button id="restart-button" class="restart-button" onclick="restartQuiz()">最初から</button>
     </div>
   </div>
 
