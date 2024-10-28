@@ -23,19 +23,34 @@ body {
   /* アイコンを隣に配置するため相対位置に */
 }
 
+
 .header i {
-  position: absolute;
-  /* 絶対配置でアイコンを配置 */
-  top: 50%;
-  /* h1の中央に合わせる */
-  left: calc(50% + 200px);
-  transform: translateY(-50%);
-  /* アイコンを縦方向に中央揃え */
   cursor: pointer;
-  /* アイコンをクリック可能にする */
+  /* クリック可能 */
   font-size: 2rem;
-  /* アイコンを大きくする */
+  /* アイコンのサイズ */
+  margin-top: 10px;
+  /* スマホでの余白調整用 */
 }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    /* スマホ時に縦並び */
+    text-align: center;
+  }
+
+  #header-title {
+    margin-bottom: 10px;
+    /* タイトルとアイコンの間に余白 */
+  }
+
+  .header i {
+    margin-top: 10px;
+    /* スマホでアイコンとタイトルの余白 */
+  }
+}
+
 
 span {
   display: block;
@@ -245,7 +260,9 @@ button:active {
   margin-bottom: 10px;
 }
 
-.type-audio-input {
+.type-audio-input,
+.timer-choice,
+.timer-seconds-choice {
   cursor: pointer;
   /* アイコンをクリック可能にする */
 }

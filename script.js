@@ -356,6 +356,8 @@ function playQuiz() {
       inputField.type = "number";
       inputField.id = "user-answer";
       inputField.placeholder = "数字を入力";
+      inputField.style.fontSize = "25px";
+      inputField.style.width = "100px";
       quizContent.appendChild(inputField);
 
       // 送信ボタンを追加
