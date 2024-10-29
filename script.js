@@ -606,7 +606,9 @@ function startTimer() {
   const timerDisplay = document.getElementById("timer");
 
   // タイマーをクリアしてから開始
-  clearInterval(timerInterval); timerDisplay.textContent = timeLeft + " 秒";
+  clearInterval(timerInterval);
+  timerDisplay.style.display = "block"; // タイマーを表示
+  timerDisplay.textContent = timeLeft + " 秒";
 
   timerInterval = setInterval(() => {
     timeLeft--;
