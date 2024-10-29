@@ -13,6 +13,31 @@ const messages = {
   es: { correct: "¡Correcto! 🎉", incorrect: "Incorrecto. 😢" },
   zh: { correct: "正确! 🎉", incorrect: "错误. 😢" },
   vi: { correct: "Chính xác! 🎉", incorrect: "Không chính xác. 😢" },
+  fr: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" }, // フランス語
+  de: { correct: "Richtig! 🎉", incorrect: "Falsch. 😢" }, // ドイツ語
+  ja: { correct: "正解！🎉", incorrect: "不正解. 😢" }, // 日本語
+  ru: { correct: "Правильно! 🎉", incorrect: "Неправильно. 😢" }, // ロシア語
+  ko: { correct: "정답! 🎉", incorrect: "오답. 😢" }, // 韓国語
+  pt: { correct: "Correto! 🎉", incorrect: "Incorreto. 😢" }, // ポルトガル語
+  hi: { correct: "सही! 🎉", incorrect: "गलत. 😢" }, // ヒンディー語
+  ar: { correct: "صحيح! 🎉", incorrect: "خطأ. 😢" }, // アラビア語
+  it: { correct: "Corretto! 🎉", incorrect: "Sbagliato. 😢" }, // イタリア語
+  nl: { correct: "Juist! 🎉", incorrect: "Onjuist. 😢" }, // オランダ語
+  tr: { correct: "Doğru! 🎉", incorrect: "Yanlış. 😢" }, // トルコ語
+  pl: { correct: "Poprawnie! 🎉", incorrect: "Niepoprawnie. 😢" }, // ポーランド語
+  th: { correct: "ถูกต้อง! 🎉", incorrect: "ผิด. 😢" }, // タイ語
+  sv: { correct: "Rätt! 🎉", incorrect: "Fel. 😢" }, // スウェーデン語
+  da: { correct: "Korrekt! 🎉", incorrect: "Forkert. 😢" }, // デンマーク語
+  fi: { correct: "Oikein! 🎉", incorrect: "Väärin. 😢" }, // フィンランド語
+  no: { correct: "Riktig! 🎉", incorrect: "Feil. 😢" }, // ノルウェー語
+  el: { correct: "Σωστό! 🎉", incorrect: "Λάθος. 😢" }, // ギリシャ語
+  he: { correct: "נכון! 🎉", incorrect: "שגוי. 😢" }, // ヘブライ語
+  cs: { correct: "Správně! 🎉", incorrect: "Špatně. 😢" }, // チェコ語
+  ro: { correct: "Corect! 🎉", incorrect: "Incorect. 😢" }, // ルーマニア語
+  hu: { correct: "Helyes! 🎉", incorrect: "Helytelen. 😢" }, // ハンガリー語
+  id: { correct: "Benar! 🎉", incorrect: "Salah. 😢" }, // インドネシア語
+  ms: { correct: "Betul! 🎉", incorrect: "Salah. 😢" }, // マレー語
+  uk: { correct: "Правильно! 🎉", incorrect: "Неправильно. 😢" }, // ウクライナ語
 };
 
 function hideLanguageInfo() {
@@ -25,11 +50,16 @@ $("#setting-icon").on("click", function () {
 });
 
 // 言語コードと表示する言語名をマッピング
+
 const languageMap = {
-  en: "英語",
-  es: "スペイン語",
-  zh: "中国語",
-  vi: "ベトナム語",
+  en: "英語", es: "スペイン語", zh: "中国語", vi: "ベトナム語",
+  fr: "フランス語", de: "ドイツ語", ja: "日本語", ru: "ロシア語",
+  ko: "韓国語", pt: "ポルトガル語", hi: "ヒンディー語", ar: "アラビア語",
+  it: "イタリア語", nl: "オランダ語", tr: "トルコ語", pl: "ポーランド語",
+  th: "タイ語", sv: "スウェーデン語", da: "デンマーク語", fi: "フィンランド語",
+  no: "ノルウェー語", el: "ギリシャ語", he: "ヘブライ語", cs: "チェコ語",
+  ro: "ルーマニア語", hu: "ハンガリー語", id: "インドネシア語", ms: "マレー語",
+  uk: "ウクライナ語",
 };
 
 function updateLanguage() {
@@ -47,11 +77,86 @@ function updateLanguage() {
     case "vietnamese":
       selectedLanguage = "vi"; // ベトナム語
       break;
+    case "french":
+      selectedLanguage = "fr"; // フランス語
+      break;
+    case "german":
+      selectedLanguage = "de"; // ドイツ語
+      break;
+    case "japanese":
+      selectedLanguage = "ja"; // 日本語
+      break;
+    case "russian":
+      selectedLanguage = "ru"; // ロシア語
+      break;
+    case "korean":
+      selectedLanguage = "ko"; // 韓国語
+      break;
+    case "portuguese":
+      selectedLanguage = "pt"; // ポルトガル語
+      break;
+    case "hindi":
+      selectedLanguage = "hi"; // ヒンディー語
+      break;
+    case "arabic":
+      selectedLanguage = "ar"; // アラビア語
+      break;
+    case "italian":
+      selectedLanguage = "it"; // イタリア語
+      break;
+    case "dutch":
+      selectedLanguage = "nl"; // オランダ語
+      break;
+    case "turkish":
+      selectedLanguage = "tr"; // トルコ語
+      break;
+    case "polish":
+      selectedLanguage = "pl"; // ポーランド語
+      break;
+    case "thai":
+      selectedLanguage = "th"; // タイ語
+      break;
+    case "swedish":
+      selectedLanguage = "sv"; // スウェーデン語
+      break;
+    case "danish":
+      selectedLanguage = "da"; // デンマーク語
+      break;
+    case "finnish":
+      selectedLanguage = "fi"; // フィンランド語
+      break;
+    case "norwegian":
+      selectedLanguage = "no"; // ノルウェー語
+      break;
+    case "greek":
+      selectedLanguage = "el"; // ギリシャ語
+      break;
+    case "hebrew":
+      selectedLanguage = "he"; // ヘブライ語
+      break;
+    case "czech":
+      selectedLanguage = "cs"; // チェコ語
+      break;
+    case "romanian":
+      selectedLanguage = "ro"; // ルーマニア語
+      break;
+    case "hungarian":
+      selectedLanguage = "hu"; // ハンガリー語
+      break;
+    case "indonesian":
+      selectedLanguage = "id"; // インドネシア語
+      break;
+    case "malay":
+      selectedLanguage = "ms"; // マレー語
+      break;
+    case "ukrainian":
+      selectedLanguage = "uk"; // ウクライナ語
+      break;
     default:
       selectedLanguage = "en"; // デフォルトは英語
   }
-  const displayLanguage = languageMap[selectedLanguage];
-  document.getElementById("selected-language").innerHTML = displayLanguage; // ラベルに反映
+  // 選択された言語の表示を更新
+  document.getElementById("selected-language").textContent = languageMap[selectedLanguage];
 }
 
 // 言語を選択する関数
@@ -501,7 +606,7 @@ function startTimer() {
   const timerDisplay = document.getElementById("timer");
 
   // タイマーをクリアしてから開始
-  clearInterval(timerInterval);timerDisplay.textContent = timeLeft + " 秒";
+  clearInterval(timerInterval); timerDisplay.textContent = timeLeft + " 秒";
 
   timerInterval = setInterval(() => {
     timeLeft--;
