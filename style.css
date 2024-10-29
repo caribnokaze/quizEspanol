@@ -1,10 +1,67 @@
 body {
+  background-image: url('images/airport-image.jpg');
+  /* 画像を適切な場所に変更 */
+  background-size: cover;
+  /* 画面をカバーする */
+  background-position: center;
+  /* 中央に位置する */
+  background-repeat: no-repeat;
+  /* 繰り返さない */
+  background-attachment: fixed; /* スクロール時に固定 */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #e9ecef;
   color: #343a40;
   text-align: center;
   padding: 20px;
   margin: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  /* 50%の黒いオーバーレイ */
+  z-index: -1;
+  /* 背景に配置 */
+}
+
+h1,
+h2,
+h3,
+p,
+button,
+span,
+label {
+  color: #ffffff;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+  /* 影を付けて読みやすく */
+}
+
+#result {
+    display: none; /* 初期状態で非表示 */
+    position: relative; /* 位置を相対的に設定 */
+    z-index: 10; /* 背景よりも前に表示する */
+    /* 他のスタイルも適宜設定 */
+}
+
+button {
+  background-color: rgba(255, 255, 255, 0.8);
+  /* 半透明のボタン */
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+}
+
+#setting-icon {
+  color: white;
+  /* アイコンの色を白に設定 */
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+  /* 影を付けて読みやすく */
 }
 
 .header {
@@ -15,7 +72,6 @@ body {
 }
 
 .header h1 {
-  color: #495057;
   margin-bottom: 20px;
   font-size: 2rem;
   font-weight: 700;
@@ -57,7 +113,6 @@ span {
 }
 
 p {
-  color: #495057;
   margin-bottom: 20px;
   font-size: 1.5rem;
   font-weight: 700;
