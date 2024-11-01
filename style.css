@@ -58,6 +58,10 @@ button {
   box-sizing: border-box;
 }
 
+#submit-answer {
+    transition: none; /* 動きが発生しないように */
+}
+
 #setting-icon {
   color: white;
   /* アイコンの色を白に設定 */
