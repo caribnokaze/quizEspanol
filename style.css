@@ -58,7 +58,7 @@ button {
   box-sizing: border-box;
 }
 
-#submit-answer {
+#submit-answer, #number-input {
     transition: none; /* 動きが発生しないように */
 }
 
