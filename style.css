@@ -58,8 +58,9 @@ button {
   box-sizing: border-box;
 }
 
-#submit-answer, #number-input {
-    transition: none; /* 動きが発生しないように */
+
+.type-audio-input {
+  transition: none; /* 動きが発生しないように */
 }
 
 #setting-icon {

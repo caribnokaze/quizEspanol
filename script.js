@@ -468,6 +468,7 @@ function playQuiz() {
       // 送信ボタンを追加
       const submitButton = document.createElement("button");
       submitButton.textContent = "回答を送信";
+      submitButton.style.transition = "none";      // 動きをなくす
       submitButton.addEventListener("click", () => {
         if (isAnswering) {
           isAnswering = false;
