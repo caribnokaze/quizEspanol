@@ -465,7 +465,6 @@ function playQuiz() {
       inputField.style.width = "100px";
       inputField.style.height = "40px";          // 高さを固定
       inputField.style.boxSizing = "border-box"; // paddingやborderがサイズに影響しないように
-      inputField.style.margin = "0";             // 上下のマージンをリセット
       inputField.style.transition = "none";      // 動きのアニメーションをなくす
       inputField.style.outline = "none";         // フォーカス時の枠線をなくす
       quizContent.appendChild(inputField);
@@ -473,7 +472,6 @@ function playQuiz() {
       // 送信ボタンを追加
       const submitButton = document.createElement("button");
       submitButton.textContent = "回答を送信";
-      submitButton.style.margin = "0";           // 上下のマージンをリセット
       submitButton.style.transition = "none";    // 動きのアニメーションをなくす
       submitButton.style.outline = "none";       // フォーカス時の枠線をなくす
       submitButton.addEventListener("click", () => {
