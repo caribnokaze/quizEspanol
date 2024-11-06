@@ -487,14 +487,15 @@ function checkAnswer(isCorrect) {
 
   if (isCorrect) {
     correctAnswers++;
-    result.textContent = messages[selectedLanguage].correct;
-    result.className = "correct";
+    result.text(messages[selectedLanguage].correct);  // .text() に変更
+    result.removeClass().addClass("correct");  // クラスをリセットしてから追加
   } else {
-    result.textContent = messages[selectedLanguage].incorrect;
-    result.className = "incorrect";
+    result.text(messages[selectedLanguage].incorrect);  // .text() に変更
+    result.removeClass().addClass("incorrect");  // クラスをリセットしてから追加
   }
+
   // このタイミングで結果を表示する
-  $('#result').show();
+  result.show();  // jQuery の .show() を使用
 
   // クッキーに現在の状態を保存
   saveQuizState();
