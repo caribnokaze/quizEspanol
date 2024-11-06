@@ -302,13 +302,6 @@ button:active {
   margin: 0;
 }
 
-.number-input {
-  display: block;
-  /* ブロック要素として表示 */
-  margin-bottom: 10px;
-  /* 各行の間にスペースを追加 */
-}
-
 .quiz-type-label {
   display: block;
   /* ブロック要素として表示 */

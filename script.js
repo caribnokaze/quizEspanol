@@ -63,7 +63,7 @@ const languageMap = {
 };
 
 function updateLanguage() {
-  const languageSelect = document.getElementById("language-select");
+const languageSelect = $("#language-select");
   switch (languageSelect.value) {
     case "english":
       selectedLanguage = "en"; // 英語
@@ -156,7 +156,7 @@ function updateLanguage() {
       selectedLanguage = "en"; // デフォルトは英語
   }
   // 選択された言語の表示を更新
-  document.getElementById("selected-language").textContent = languageMap[selectedLanguage];
+  $("selected-language").text(languageMap[selectedLanguage]);
 }
 
 // 言語を選択する関数
@@ -164,12 +164,12 @@ function setLanguage(language) {
   selectedLanguage = language;
 }
 
-document.getElementById("save-button").addEventListener("click", saveSettings);
+$("#save-button").on("click", saveSettings);
 
 function saveSettings() {
-  const quizType = document.querySelector('input[name="quizType"]:checked').value;
-  const timerType = document.querySelector('input[name="timerChoice"]:checked').value;
-  const timerSeconds = document.querySelector('input[name="timerSeconds"]:checked').value;
+  const quizType = $('input[name="quizType"]:checked').val();
+  const timerType = getTimerType();
+  const timerSeconds = $('input[name="timerSeconds"]:checked').val();
 
   // タイマーが「あり」を選択しているが秒数が選択されていない場合
   if (timerType === "yes-timer" && !timerSeconds) {
@@ -185,14 +185,14 @@ function saveSettings() {
   quizStartScreenVisible()
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+$(function () {
   // 初期表示の設定
   // toggleTimerOptions(); // 初期状態を設定
 
   // タイマーの選択肢に変更イベントを設定
-  const timerChoices = document.querySelectorAll('input[name="timerChoice"]');
+  const timerChoices = $('input[name="timerChoice"]');
   timerChoices.forEach((choice) => {
-    choice.addEventListener("change", toggleTimerOptions);
+    $(this).on("change", toggleTimerOptions);
   });
 
   // 保存されたクイズタイプを取得
@@ -202,46 +202,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   if (savedQuizType) {
-    document.querySelector(
-      `input[name="quizType"][value="${savedQuizType}"]`
-    ).checked = true;
+    $('input[name="quizType"][value="' + savedQuizType + '"]').prop('checked', true);
   }
 
   if (savedTimerType) {
-    document.querySelector(`input[name="timerChoice"][value="${savedTimerType}"]`).checked = true;
+    $('input[name="timerChoice"][value="' + savedTimerType + '"]').prop('checked', true);
   }
 
   // 秒数が保存されていればその秒数を、なければデフォルトで5秒を選択
   if (savedTimerSeconds) {
-    document.querySelector(`input[name="timerSeconds"][value="${savedTimerSeconds}"]`).checked = true;
+    $('input[name="timerSeconds"][value="' + savedTimerSeconds + '"]').prop('checked', true);
   } else {
-    document.querySelector('input[name="timerSeconds"][value="5"]').checked = true;
+    $('input[name="timerSeconds"][value="5"]').prop('checked', true);
   }
 
   toggleTimerOptions(); // タイマーオプションの初期表示を設定
 });
 
 function toggleTimerOptions() {
-  const timerChoice = document.querySelector('input[name="timerChoice"]:checked').value;
-  const timerSecondsContainer = document.getElementById("timer-seconds-container");
+  const timerChoice = $('input[name="timerChoice"]:checked').val();
+  const timerSecondsContainer = $('#timer-seconds-container');
 
   if (timerChoice === "yes-timer") {
-    timerSecondsContainer.style.display = "block"; // タイマーオプションを表示
+    $(timerSecondsContainer).show(); // タイマーオプションを表示
   } else {
-    timerSecondsContainer.style.display = "none"; // タイマーオプションを非表示
+    $(timerSecondsContainer).hide(); // タイマーオプションを非表示
   }
 }
 
-const minInput = document.getElementById("min-number");
-const maxInput = document.getElementById("max-number");
+const minInput = $('#min-number');
+const maxInput = $('#max-number');
 
 function enforceRange(input) {
-  input.addEventListener("input", function () {
+  $(input).on('input', function () {
     // 入力された値が範囲外の場合に制限
-    if (input.value < 1) {
-      input.value = 1;
-    } else if (input.value > 10000) {
-      input.value = 10000;
+    if ($(input).val() < 1) {
+      (input).val(1);
+    } else if ($(input).val() > 10000) {
+      $(input).val(10000);
     }
   });
 }
@@ -255,16 +253,13 @@ function startQuiz() {
   loadQuizState(); // クッキーから状態を読み込む
 
   // ユーザーが入力した最小値と最大値を取得
-  minNumber = parseInt(document.getElementById("min-number").value, 10);
-  maxNumber = parseInt(document.getElementById("max-number").value, 10);
+  minNumber = parseInt($('#min-number').val(), 10);
+  maxNumber = parseInt($('#max-number').val(), 10);
 
   if (isNaN(minNumber) || isNaN(maxNumber) || minNumber >= maxNumber) {
     alert("有効な最小値と最大値を入力してください。");
     return;
   }
-  console.log("answerCount:", answerCount);
-  console.log("maxQuestions:", maxQuestions);
-  console.log("isQuizFinished:", isQuizFinished());
 
   if (isQuizFinished()) {
     quizResultScreenVisible(); // クイズ結果画面を表示
@@ -280,19 +275,19 @@ function startQuiz() {
 }
 
 // 最初からボタンのクリックイベント処理
-document.getElementById("restart-button").addEventListener("click", function () {
+$('#restart-button').on('click', function () {
   initializeQuiz(); // 状態を初期化
   quizStartScreenVisible(); // クイズ開始画面を表示
 });
 
 // クイズ結果を設定する
 function setQuizResult(result) {
-  document.getElementById("result").textContent = result;
+  $('#result').text(result);
 }
 
 // 現在の回答数を画面表示させる
 function updateAnswerCount() {
-  document.getElementById("answer-count").textContent = answerCount;
+  $('#answer-count').text(answerCount);
 }
 
 // 最後のクイズが終了している
@@ -366,21 +361,22 @@ window.onload = function () {
   quizStartScreenVisible();
 };
 
-function playQuiz() {
-  $("#setting-icon").css("display", "none");
-  const quizType = document.querySelector(
-    'input[name="quizType"]:checked'
-  ).value; // quizTypeを正しく取得
-  const timerType = document.querySelector(
+function getTimerType() {
+  return document.querySelector(
     'input[name="timerChoice"]:checked'
   ).value; //タイマーの選択を取得
-  let timerDuration = 0; //タイマーのリセット
+}
 
-  if (timerType === "yes-timer") {
+function playQuiz() {
+  $("#setting-icon").css("display", "none");
+  const quizType = $('input[name="quizType"]:checked').val(); // quizTypeを正しく取得
+  
+  let timerDuration = 0; //タイマーのリセット
+  if (getTimerType() === "yes-timer") {
     // タイマーが「あり」の場合のみ、選択された時間を取得
-    const timerSecondsElement = document.querySelector('input[name="timerSeconds"]:checked');
-    if (timerSecondsElement) {
-      timerDuration = parseInt(timerSecondsElement.value)
+    const timerSecondsElement = $('input[name="timerSeconds"]:checked');
+    if (timerSecondsElement.length) {
+      timerDuration = parseInt(timerSecondsElement.val())
       timeLeft = timerDuration; //タイマーの初期化
       startTimer();
     } else {
@@ -388,124 +384,106 @@ function playQuiz() {
     }
   };
 
+  isAnswering = true; //回答可能にする
 
-  if (totalQuestions < maxQuestions) {
-    isAnswering = true; //回答可能にする
+  if (quizType === "multiple-choice") {
+    generateRandomOptions()
+  } else {
+    generateAudioInput()
+  }
+  speakAnswer()
+  // 結果表示をリセット
+  setQuizResult("");
 
-    if (quizType === "multiple-choice") {
-      // 指定範囲でのランダムな数字を3つ生成
-      const numbers = [];
-      correctAnswer =
-        Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-      numbers.push(correctAnswer);
+}
 
-      while (numbers.length < 3) {
-        const number =
-          Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-        if (!numbers.includes(number)) {
-          numbers.push(number);
-        }
-      }
+function generateRandomOptions() {
+  // 指定範囲でのランダムな数字を3つ生成
+  const numbers = [];
+  correctAnswer =
+    Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+  numbers.push(correctAnswer);
 
-      // 数字をシャッフル
-      numbers.sort(() => Math.random() - 0.5);
-
-      // クイズを表示
-      const quizContent = document.getElementById("quiz-content");
-      quizContent.innerHTML = ""; // クイズ内容をリセット
-      numbers.forEach((number) => {
-        const option = document.createElement("div");
-        option.className = "option";
-        option.textContent = number;
-        option.addEventListener("click", () => {
-          if (isAnswering) {
-            isAnswering = false;
-            checkAnswer(number === correctAnswer);
-          }
-        });
-        quizContent.appendChild(option);
-      });
-
-      // 正しい答えを音声で読み上げる
-      if ("speechSynthesis" in window) {
-        const utterance = new SpeechSynthesisUtterance(
-          correctAnswer.toString()
-        );
-        utterance.lang = selectedLanguage; // 選択された言語を設定
-        window.speechSynthesis.speak(utterance);
-      } else {
-        alert("このブラウザは音声合成APIをサポートしていません。");
-      }
-
-      // 結果表示をリセット
-      setQuizResult("");
-    } else if (quizType === "audio-input") {
-      // 音声を聞いて数字を直接入力するクイズの場合
-      correctAnswer =
-        Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-      // 音声で正しい答えを読み上げる
-      if ("speechSynthesis" in window) {
-        const utterance = new SpeechSynthesisUtterance(
-          correctAnswer.toString()
-        );
-        utterance.lang = selectedLanguage;
-        window.speechSynthesis.speak(utterance);
-      } else {
-        alert("このブラウザは音声合成APIをサポートしていません。");
-      }
-      // クイズのUIをリセットし、入力フィールドを表示
-      const quizContent = document.getElementById("quiz-content");
-      quizContent.innerHTML = ""; // クイズ内容をリセット
-
-      const inputField = document.createElement("input");
-      inputField.type = "number";
-      inputField.id = "user-answer";
-      inputField.placeholder = "数字を入力";
-      inputField.style.fontSize = "25px";
-      inputField.style.width = "100px";
-      inputField.style.height = "40px";          // 高さを固定
-      inputField.style.boxSizing = "border-box"; // paddingやborderがサイズに影響しないように
-      inputField.style.transition = "none";      // 動きのアニメーションをなくす
-      inputField.style.outline = "none";         // フォーカス時の枠線をなくす
-      quizContent.appendChild(inputField);
-
-      // 送信ボタンを追加
-      const submitButton = document.createElement("button");
-      submitButton.textContent = "回答を送信";
-      submitButton.style.transition = "none";    // 動きのアニメーションをなくす
-      submitButton.style.outline = "none";       // フォーカス時の枠線をなくす
-      submitButton.addEventListener("click", () => {
-        if (isAnswering) {
-          isAnswering = false;
-          if (timerType === "with-timer") {
-            clearTimeout(timer); // タイマーをクリア
-          }
-          const userAnswer = parseInt(
-            document.getElementById("user-answer").value
-          );
-          checkAnswer(userAnswer === correctAnswer);
-        }
-      });
-      quizContent.appendChild(submitButton);
-
-      // 結果表示をリセット
-      setQuizResult("");
-    } else {
-      // クイズが終了したら正答率を表示
-      displayScore();
+  while (numbers.length < 3) {
+    const number =
+      Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+    if (!numbers.includes(number)) {
+      numbers.push(number);
     }
   }
+
+  // 数字をシャッフル
+  numbers.sort(() => Math.random() - 0.5);
+
+  // クイズを表示
+  const quizContent = $('#quiz-content');
+  quizContent.html(""); // クイズ内容をリセット
+
+  numbers.forEach((number) => {
+    const option = $('<div>');
+    option.text(number);
+    option.addClass("option");
+    option.on("click", () => {
+      if (isAnswering) {
+        isAnswering = false;
+        checkAnswer(number === correctAnswer);
+      }
+    });
+    quizContent.append(option);
+  });
+}
+
+function generateAudioInput() {
+  // 音声を聞いて数字を直接入力するクイズの場合
+  correctAnswer = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+
+  // クイズのUIをリセットし、入力フィールドを表示
+  const quizContent = $('#quiz-content');
+  quizContent.html(""); // クイズ内容をリセット
+
+  // 入力フィールドを作成
+  const inputField = $('<input>');
+  inputField.attr('type', 'number'); // typeを設定
+  inputField.attr('id', 'user-answer'); // IDを設定
+  inputField.attr('placeholder', '数字を入力'); // プレースホルダを設定
+  inputField.css({
+    fontSize: '25px',
+    width: '100px',
+    height: '40px', // 高さを固定
+    boxSizing: 'border-box' // paddingやborderがサイズに影響しないように
+  });
+
+  // 入力フィールドをquizContentに追加
+  quizContent.append(inputField);
+
+  // 送信ボタンを作成
+  const submitButton = $('<button id="submit-button">');
+  submitButton.text('回答を送信');
+
+  submitButton.on('click', () => {
+    if (isAnswering) {
+      isAnswering = false;
+      if (getTimerType() === "with-timer") {
+        clearTimeout(timer); // タイマーをクリア
+      }
+      const userAnswer = parseInt($('#user-answer').val());
+      checkAnswer(userAnswer === correctAnswer);
+    }
+  });
+
+  // ボタンをquizContentに追加
+  quizContent.append(submitButton);
 }
 
 function checkAnswer(isCorrect) {
-  const result = document.getElementById("result");
+  const result = $('#result');
 
   // タイマーを停止
   clearInterval(timerInterval);
 
   totalQuestions++;
   answerCount++;
-  document.getElementById("answer-count").textContent = answerCount;
+  $('#answer-count').text(answerCount);
 
   if (isCorrect) {
     correctAnswers++;
@@ -516,7 +494,7 @@ function checkAnswer(isCorrect) {
     result.className = "incorrect";
   }
   // このタイミングで結果を表示する
-  document.getElementById("result").style.display = "block";
+  $('#result').show();
 
   // クッキーに現在の状態を保存
   saveQuizState();
@@ -541,44 +519,34 @@ function displayScore() {
 }
 
 function replayQuiz() {
-  const button = document.getElementById("replay-button"); // ボタンのIDを指定
+  const button = $('replay-button'); // ボタンのIDを指定
   button.disabled = true; // ボタンを無効にする
-  if ("speechSynthesis" in window && correctAnswer !== 0) {
-    // 現在の答えの音声を再生成して再生
-    const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
-    newUtterance.lang = selectedLanguage;
-    // 音声の再生が終わった時にボタンを有効化
-    newUtterance.onend = function () {
-      button.disabled = false; // 音声再生が完了したらボタンを再有効化
-    };
-    window.speechSynthesis.speak(newUtterance);
-  } else {
-    console.log(
-      "音声合成はサポートされていないか、正しい値が設定されていません。"
+  speakAnswer()
+  button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
+}
+
+function speakAnswer(speakSlowly = false) {
+  // 正しい答えを音声で読み上げる
+  if ("speechSynthesis" in window) {
+    const utterance = new SpeechSynthesisUtterance(
+      correctAnswer.toString()
     );
-    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
+    utterance.lang = selectedLanguage; // 選択された言語を設定
+    if (speakSlowly) {
+      utterance.rate = 0.5; // 読み上げ速度を遅くする
+    }
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert("このブラウザは音声合成APIをサポートしていません。");
   }
 }
 
 function slowReplayQuiz() {
-  const button = document.getElementById("slow-read-button"); // ボタンのIDを指定
+  const button = $('slow-read-button'); // ボタンのIDを指定
   button.disabled = true; // ボタンを無効にする
-  if ("speechSynthesis" in window && correctAnswer !== 0) {
-    // 現在の答えの音声を再生成してゆっくり再生
-    const newUtterance = new SpeechSynthesisUtterance(correctAnswer.toString());
-    newUtterance.lang = selectedLanguage;
-    // 音声の再生が終わった時にボタンを有効化
-    newUtterance.onend = function () {
-      button.disabled = false; // 音声再生が完了したらボタンを再有効化
-    };
-    newUtterance.rate = 0.5; // 読み上げ速度を遅くする
-    window.speechSynthesis.speak(newUtterance);
-  } else {
-    console.log(
-      "音声合成はサポートされていないか、正しい値が設定されていません。"
-    );
-    button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
-  }
+  // 現在の答えの音声を再生成してゆっくり再生
+  speakAnswer(true)
+  button.disabled = false; // 音声合成がサポートされていない場合もボタンを再有効化
 }
 
 // localStorageにデータを保存する関数を作成
@@ -609,20 +577,20 @@ let timeLeft = 0;
 let timerInterval;
 
 function startTimer() {
-  const timerDisplay = document.getElementById("timer");
+  const timerDisplay = $('#timer');  // IDを正確に指定
 
   // タイマーをクリアしてから開始
   clearInterval(timerInterval);
-  timerDisplay.style.display = "block"; // タイマーを表示
-  timerDisplay.textContent = timeLeft + " 秒";
+  timerDisplay.css('display', 'block');  // タイマーを表示
+  timerDisplay.text(timeLeft + " 秒");
 
   timerInterval = setInterval(() => {
     timeLeft--;
-    timerDisplay.textContent = timeLeft + " 秒";
+    timerDisplay.text(timeLeft + " 秒");
 
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      timerDisplay.textContent = "時間切れ！";
+      timerDisplay.text("時間切れ！");
       // 時間切れのため自動で不正解として次の問題に進む
       checkAnswer(false);
     }
