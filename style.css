@@ -1,10 +1,68 @@
 body {
+  background-image: url('images/airport-image.jpg');
+  /* 画像を適切な場所に変更 */
+  background-size: cover;
+  /* 画面をカバーする */
+  background-position: center;
+  /* 中央に位置する */
+  background-repeat: no-repeat;
+  /* 繰り返さない */
+  background-attachment: fixed; /* スクロール時に固定 */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #e9ecef;
   color: #343a40;
   text-align: center;
   padding: 20px;
   margin: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  /* 50%の黒いオーバーレイ */
+  z-index: -1;
+  /* 背景に配置 */
+}
+
+h1,
+h2,
+h3,
+p,
+button,
+span,
+label {
+  color: #ffffff;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+  /* 影を付けて読みやすく */
+}
+
+#result {
+    display: none; /* 初期状態で非表示 */
+    position: relative; /* 位置を相対的に設定 */
+    z-index: 10; /* 背景よりも前に表示する */
+    /* 他のスタイルも適宜設定 */
+}
+
+button {
+  background-color: rgba(255, 255, 255, 0.8);
+  /* 半透明のボタン */
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#setting-icon {
+  color: white;
+  /* アイコンの色を白に設定 */
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+  /* 影を付けて読みやすく */
 }
 
 .header {
@@ -15,7 +73,6 @@ body {
 }
 
 .header h1 {
-  color: #495057;
   margin-bottom: 20px;
   font-size: 2rem;
   font-weight: 700;
@@ -23,26 +80,40 @@ body {
   /* アイコンを隣に配置するため相対位置に */
 }
 
+
 .header i {
-  position: absolute;
-  /* 絶対配置でアイコンを配置 */
-  top: 50%;
-  /* h1の中央に合わせる */
-  left: calc(50% + 200px);
-  transform: translateY(-50%);
-  /* アイコンを縦方向に中央揃え */
   cursor: pointer;
-  /* アイコンをクリック可能にする */
+  /* クリック可能 */
   font-size: 2rem;
-  /* アイコンを大きくする */
+  /* アイコンのサイズ */
+  margin-top: 10px;
+  /* スマホでの余白調整用 */
 }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    /* スマホ時に縦並び */
+    text-align: center;
+  }
+
+  #header-title {
+    margin-bottom: 10px;
+    /* タイトルとアイコンの間に余白 */
+  }
+
+  .header i {
+    margin-top: 10px;
+    /* スマホでアイコンとタイトルの余白 */
+  }
+}
+
 
 span {
   display: block;
 }
 
 p {
-  color: #495057;
   margin-bottom: 20px;
   font-size: 1.5rem;
   font-weight: 700;
@@ -134,7 +205,7 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* 中央揃え */
+  box-sizing: border-box;
 }
 
 .number-input div {
@@ -168,7 +239,7 @@ button:active {
 
 
 .language-select {
-  width: 150px;
+  width: 200px;
   /* 入力フィールドの幅を指定 */
   font-size: 25px;
 }
@@ -231,13 +302,6 @@ button:active {
   margin: 0;
 }
 
-.number-input {
-  display: block;
-  /* ブロック要素として表示 */
-  margin-bottom: 10px;
-  /* 各行の間にスペースを追加 */
-}
-
 .quiz-type-label {
   display: block;
   /* ブロック要素として表示 */
@@ -245,7 +309,9 @@ button:active {
   margin-bottom: 10px;
 }
 
-.type-audio-input {
+.type-audio-input,
+.timer-choice,
+.timer-seconds-choice {
   cursor: pointer;
   /* アイコンをクリック可能にする */
 }
