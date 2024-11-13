@@ -124,8 +124,7 @@ $(function () {
   // ページ読み込み時に初期表示を設定
   quizStartScreenVisible();
   // タイマーの選択肢に変更イベントを設定
-  const timerChoices = $('input[name="timerChoice"]');
-  timerChoices.forEach((choice) => {
+  $('input[name="timerChoice"]').each(function() {
     $(this).on("change", toggleTimerOptions);
   });
 
