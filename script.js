@@ -6,7 +6,14 @@ let answerCount = 0;
 let isAnswering = false;
 let minNumber;
 let maxNumber;
-let selectedLanguage = "en"; // デフォルトは英語
+let timeLeft = 0;
+let timerInterval;
+// ユーザーが入力した最小値と最大値を取得
+minNumber = parseInt($('#min-number').val(), 10);
+maxNumber = parseInt($('#max-number').val(), 10);
+const minInput = $('#min-number');
+const maxInput = $('#max-number');
+
 // 言語ごとのメッセージを定義
 const messages = {
   en: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" },
@@ -50,8 +57,18 @@ $("#setting-icon").on("click", function () {
 });
 
 // 言語コードと表示する言語名をマッピング
-
 const languageMap = {
+  english: "en", spanish: "es", chinese: "zh", vietnamese: "vi",
+  french: "fr", german: "de", japanese: "ja", russian: "ru",
+  korean: "ko", portuguese: "pt", hindi: "hi", arabic: "ar",
+  italian: "it", dutch: "nl", turkish: "tr", polish: "pl",
+  thai: "th", swedish: "sv", danish: "da", finnish: "fi",
+  norwegian: "no", greek: "el", hebrew: "he", czech: "cs",
+  romanian: "ro", hungarian: "hu", indonesian: "id", malay: "ms",
+  ukrainian: "uk"
+};
+
+const languageNames = {
   en: "英語", es: "スペイン語", zh: "中国語", vi: "ベトナム語",
   fr: "フランス語", de: "ドイツ語", ja: "日本語", ru: "ロシア語",
   ko: "韓国語", pt: "ポルトガル語", hi: "ヒンディー語", ar: "アラビア語",
@@ -59,110 +76,23 @@ const languageMap = {
   th: "タイ語", sv: "スウェーデン語", da: "デンマーク語", fi: "フィンランド語",
   no: "ノルウェー語", el: "ギリシャ語", he: "ヘブライ語", cs: "チェコ語",
   ro: "ルーマニア語", hu: "ハンガリー語", id: "インドネシア語", ms: "マレー語",
-  uk: "ウクライナ語",
+  uk: "ウクライナ語"
 };
 
 function updateLanguage() {
-const languageSelect = $("#language-select");
-  switch (languageSelect.value) {
-    case "english":
-      selectedLanguage = "en"; // 英語
-      break;
-    case "spanish":
-      selectedLanguage = "es"; // スペイン語
-      break;
-    case "chinese":
-      selectedLanguage = "zh"; // 中国語
-      break;
-    case "vietnamese":
-      selectedLanguage = "vi"; // ベトナム語
-      break;
-    case "french":
-      selectedLanguage = "fr"; // フランス語
-      break;
-    case "german":
-      selectedLanguage = "de"; // ドイツ語
-      break;
-    case "japanese":
-      selectedLanguage = "ja"; // 日本語
-      break;
-    case "russian":
-      selectedLanguage = "ru"; // ロシア語
-      break;
-    case "korean":
-      selectedLanguage = "ko"; // 韓国語
-      break;
-    case "portuguese":
-      selectedLanguage = "pt"; // ポルトガル語
-      break;
-    case "hindi":
-      selectedLanguage = "hi"; // ヒンディー語
-      break;
-    case "arabic":
-      selectedLanguage = "ar"; // アラビア語
-      break;
-    case "italian":
-      selectedLanguage = "it"; // イタリア語
-      break;
-    case "dutch":
-      selectedLanguage = "nl"; // オランダ語
-      break;
-    case "turkish":
-      selectedLanguage = "tr"; // トルコ語
-      break;
-    case "polish":
-      selectedLanguage = "pl"; // ポーランド語
-      break;
-    case "thai":
-      selectedLanguage = "th"; // タイ語
-      break;
-    case "swedish":
-      selectedLanguage = "sv"; // スウェーデン語
-      break;
-    case "danish":
-      selectedLanguage = "da"; // デンマーク語
-      break;
-    case "finnish":
-      selectedLanguage = "fi"; // フィンランド語
-      break;
-    case "norwegian":
-      selectedLanguage = "no"; // ノルウェー語
-      break;
-    case "greek":
-      selectedLanguage = "el"; // ギリシャ語
-      break;
-    case "hebrew":
-      selectedLanguage = "he"; // ヘブライ語
-      break;
-    case "czech":
-      selectedLanguage = "cs"; // チェコ語
-      break;
-    case "romanian":
-      selectedLanguage = "ro"; // ルーマニア語
-      break;
-    case "hungarian":
-      selectedLanguage = "hu"; // ハンガリー語
-      break;
-    case "indonesian":
-      selectedLanguage = "id"; // インドネシア語
-      break;
-    case "malay":
-      selectedLanguage = "ms"; // マレー語
-      break;
-    case "ukrainian":
-      selectedLanguage = "uk"; // ウクライナ語
-      break;
-    default:
-      selectedLanguage = "en"; // デフォルトは英語
-  }
-  // 選択された言語の表示を更新
-  $("selected-language").text(languageMap[selectedLanguage]);
+  const selectedOption = $("#language-select").val();
+
+  selectedLanguage = languageMap[selectedOption] || "en";
+
+  // 選択された言語名の表示を更新
+  $("#selected-language").text(languageNames[selectedLanguage]);
 }
 
-// 言語を選択する関数
-function setLanguage(language) {
-  selectedLanguage = language;
-}
+const languageSelect = $("#language-select");
+$.each(languageMap, function(value, code) {
+  const option = $("<option>").val(value).text(languageNames[code]);
+  languageSelect.append(option);
+});
 
 $("#save-button").on("click", saveSettings);
 
@@ -177,6 +107,11 @@ function saveSettings() {
     return; // 保存処理を中断
   }
 
+  if (isNaN(minNumber) || isNaN(maxNumber) || minNumber >= maxNumber) {
+    alert("有効な最小値と最大値を入力してください。");
+    return;
+  }
+
   // タイマー設定を localStorage に保存
   localStorage.setItem("selectedQuizType", quizType);
   localStorage.setItem("timerType", timerType);
@@ -186,9 +121,8 @@ function saveSettings() {
 }
 
 $(function () {
-  // 初期表示の設定
-  // toggleTimerOptions(); // 初期状態を設定
-
+  // ページ読み込み時に初期表示を設定
+  quizStartScreenVisible();
   // タイマーの選択肢に変更イベントを設定
   const timerChoices = $('input[name="timerChoice"]');
   timerChoices.forEach((choice) => {
@@ -199,7 +133,6 @@ $(function () {
   const savedQuizType = localStorage.getItem("selectedQuizType");
   const savedTimerType = localStorage.getItem("timerType");
   const savedTimerSeconds = localStorage.getItem("timerSeconds");
-
 
   if (savedQuizType) {
     $('input[name="quizType"][value="' + savedQuizType + '"]').prop('checked', true);
@@ -230,9 +163,6 @@ function toggleTimerOptions() {
   }
 }
 
-const minInput = $('#min-number');
-const maxInput = $('#max-number');
-
 function enforceRange(input) {
   $(input).on('input', function () {
     // 入力された値が範囲外の場合に制限
@@ -251,15 +181,6 @@ enforceRange(maxInput);
 function startQuiz() {
 
   loadQuizState(); // クッキーから状態を読み込む
-
-  // ユーザーが入力した最小値と最大値を取得
-  minNumber = parseInt($('#min-number').val(), 10);
-  maxNumber = parseInt($('#max-number').val(), 10);
-
-  if (isNaN(minNumber) || isNaN(maxNumber) || minNumber >= maxNumber) {
-    alert("有効な最小値と最大値を入力してください。");
-    return;
-  }
 
   if (isQuizFinished()) {
     quizResultScreenVisible(); // クイズ結果画面を表示
@@ -356,11 +277,6 @@ function quizResultScreenVisible() {
   $("#slow-read-button").hide();      // ゆっくりもう一度聞くボタンを非表示
 }
 
-// ページ読み込み時に初期値を表示
-window.onload = function () {
-  quizStartScreenVisible();
-};
-
 function getTimerType() {
   return document.querySelector(
     'input[name="timerChoice"]:checked'
@@ -370,7 +286,7 @@ function getTimerType() {
 function playQuiz() {
   $("#setting-icon").css("display", "none");
   const quizType = $('input[name="quizType"]:checked').val(); // quizTypeを正しく取得
-  
+
   let timerDuration = 0; //タイマーのリセット
   if (getTimerType() === "yes-timer") {
     // タイマーが「あり」の場合のみ、選択された時間を取得
@@ -574,15 +490,12 @@ function loadQuizState() {
   }
 }
 
-let timeLeft = 0;
-let timerInterval;
-
 function startTimer() {
   const timerDisplay = $('#timer');  // IDを正確に指定
 
   // タイマーをクリアしてから開始
   clearInterval(timerInterval);
-  timerDisplay.css('display', 'block');  // タイマーを表示
+  timerDisplay.show();
   timerDisplay.text(timeLeft + " 秒");
 
   timerInterval = setInterval(() => {
