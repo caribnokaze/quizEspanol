@@ -13,39 +13,7 @@ minNumber = parseInt($('#min-number').val(), 10);
 maxNumber = parseInt($('#max-number').val(), 10);
 const minInput = $('#min-number');
 const maxInput = $('#max-number');
-
-// 言語ごとのメッセージを定義
-const messages = {
-  en: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" },
-  es: { correct: "¡Correcto! 🎉", incorrect: "Incorrecto. 😢" },
-  zh: { correct: "正确! 🎉", incorrect: "错误. 😢" },
-  vi: { correct: "Chính xác! 🎉", incorrect: "Không chính xác. 😢" },
-  fr: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" }, // フランス語
-  de: { correct: "Richtig! 🎉", incorrect: "Falsch. 😢" }, // ドイツ語
-  ja: { correct: "正解！🎉", incorrect: "不正解. 😢" }, // 日本語
-  ru: { correct: "Правильно! 🎉", incorrect: "Неправильно. 😢" }, // ロシア語
-  ko: { correct: "정답! 🎉", incorrect: "오답. 😢" }, // 韓国語
-  pt: { correct: "Correto! 🎉", incorrect: "Incorreto. 😢" }, // ポルトガル語
-  hi: { correct: "सही! 🎉", incorrect: "गलत. 😢" }, // ヒンディー語
-  ar: { correct: "صحيح! 🎉", incorrect: "خطأ. 😢" }, // アラビア語
-  it: { correct: "Corretto! 🎉", incorrect: "Sbagliato. 😢" }, // イタリア語
-  nl: { correct: "Juist! 🎉", incorrect: "Onjuist. 😢" }, // オランダ語
-  tr: { correct: "Doğru! 🎉", incorrect: "Yanlış. 😢" }, // トルコ語
-  pl: { correct: "Poprawnie! 🎉", incorrect: "Niepoprawnie. 😢" }, // ポーランド語
-  th: { correct: "ถูกต้อง! 🎉", incorrect: "ผิด. 😢" }, // タイ語
-  sv: { correct: "Rätt! 🎉", incorrect: "Fel. 😢" }, // スウェーデン語
-  da: { correct: "Korrekt! 🎉", incorrect: "Forkert. 😢" }, // デンマーク語
-  fi: { correct: "Oikein! 🎉", incorrect: "Väärin. 😢" }, // フィンランド語
-  no: { correct: "Riktig! 🎉", incorrect: "Feil. 😢" }, // ノルウェー語
-  el: { correct: "Σωστό! 🎉", incorrect: "Λάθος. 😢" }, // ギリシャ語
-  he: { correct: "נכון! 🎉", incorrect: "שגוי. 😢" }, // ヘブライ語
-  cs: { correct: "Správně! 🎉", incorrect: "Špatně. 😢" }, // チェコ語
-  ro: { correct: "Corect! 🎉", incorrect: "Incorect. 😢" }, // ルーマニア語
-  hu: { correct: "Helyes! 🎉", incorrect: "Helytelen. 😢" }, // ハンガリー語
-  id: { correct: "Benar! 🎉", incorrect: "Salah. 😢" }, // インドネシア語
-  ms: { correct: "Betul! 🎉", incorrect: "Salah. 😢" }, // マレー語
-  uk: { correct: "Правильно! 🎉", incorrect: "Неправильно. 😢" }, // ウクライナ語
-};
+const languageSelect = $("#language-select");
 
 function hideLanguageInfo() {
   $("#setting-container").css("display", "block");
@@ -56,41 +24,135 @@ $("#setting-icon").on("click", function () {
   hideLanguageInfo();
 });
 
-// 言語コードと表示する言語名をマッピング
-const languageMap = {
-  english: "en", spanish: "es", chinese: "zh", vietnamese: "vi",
-  french: "fr", german: "de", japanese: "ja", russian: "ru",
-  korean: "ko", portuguese: "pt", hindi: "hi", arabic: "ar",
-  italian: "it", dutch: "nl", turkish: "tr", polish: "pl",
-  thai: "th", swedish: "sv", danish: "da", finnish: "fi",
-  norwegian: "no", greek: "el", hebrew: "he", czech: "cs",
-  romanian: "ro", hungarian: "hu", indonesian: "id", malay: "ms",
-  ukrainian: "uk"
-};
-
-const languageNames = {
-  en: "英語", es: "スペイン語", zh: "中国語", vi: "ベトナム語",
-  fr: "フランス語", de: "ドイツ語", ja: "日本語", ru: "ロシア語",
-  ko: "韓国語", pt: "ポルトガル語", hi: "ヒンディー語", ar: "アラビア語",
-  it: "イタリア語", nl: "オランダ語", tr: "トルコ語", pl: "ポーランド語",
-  th: "タイ語", sv: "スウェーデン語", da: "デンマーク語", fi: "フィンランド語",
-  no: "ノルウェー語", el: "ギリシャ語", he: "ヘブライ語", cs: "チェコ語",
-  ro: "ルーマニア語", hu: "ハンガリー語", id: "インドネシア語", ms: "マレー語",
-  uk: "ウクライナ語"
+const languageData = {
+  en: {
+    name: "英語",
+    messages: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" }
+  },
+  es: {
+    name: "スペイン語",
+    messages: { correct: "¡Correcto! 🎉", incorrect: "Incorrecto. 😢" }
+  },
+  zh: {
+    name: "中国語",
+    messages: { correct: "正确! 🎉", incorrect: "错误. 😢" }
+  },
+  vi: {
+    name: "ベトナム語",
+    messages: { correct: "Chính xác! 🎉", incorrect: "Không chính xác. 😢" }
+  },
+  fr: {
+    name: "フランス語",
+    messages: { correct: "Correct! 🎉", incorrect: "Incorrect. 😢" }
+  },
+  de: {
+    name: "ドイツ語",
+    messages: { correct: "Richtig! 🎉", incorrect: "Falsch. 😢" }
+  },
+  ja: {
+    name: "日本語",
+    messages: { correct: "正解！🎉", incorrect: "不正解. 😢" }
+  },
+  ru: {
+    name: "ロシア語",
+    messages: { correct: "Правильно! 🎉", incorrect: "Неправильно. 😢" }
+  },
+  ko: {
+    name: "韓国語",
+    messages: { correct: "정답! 🎉", incorrect: "오답. 😢" }
+  },
+  pt: {
+    name: "ポルトガル語",
+    messages: { correct: "Correto! 🎉", incorrect: "Incorreto. 😢" }
+  },
+  hi: {
+    name: "ヒンディー語",
+    messages: { correct: "सही! 🎉", incorrect: "गलत. 😢" }
+  },
+  ar: {
+    name: "アラビア語",
+    messages: { correct: "صحيح! 🎉", incorrect: "خطأ. 😢" }
+  },
+  it: {
+    name: "イタリア語",
+    messages: { correct: "Corretto! 🎉", incorrect: "Sbagliato. 😢" }
+  },
+  nl: {
+    name: "オランダ語",
+    messages: { correct: "Juist! 🎉", incorrect: "Onjuist. 😢" }
+  },
+  tr: {
+    name: "トルコ語",
+    messages: { correct: "Doğru! 🎉", incorrect: "Yanlış. 😢" }
+  },
+  pl: {
+    name: "ポーランド語",
+    messages: { correct: "Poprawnie! 🎉", incorrect: "Niepoprawnie. 😢" }
+  },
+  th: {
+    name: "タイ語",
+    messages: { correct: "ถูกต้อง! 🎉", incorrect: "ผิด. 😢" }
+  },
+  sv: {
+    name: "スウェーデン語",
+    messages: { correct: "Rätt! 🎉", incorrect: "Fel. 😢" }
+  },
+  da: {
+    name: "デンマーク語",
+    messages: { correct: "Korrekt! 🎉", incorrect: "Forkert. 😢" }
+  },
+  fi: {
+    name: "フィンランド語",
+    messages: { correct: "Oikein! 🎉", incorrect: "Väärin. 😢" }
+  },
+  no: {
+    name: "ノルウェー語",
+    messages: { correct: "Riktig! 🎉", incorrect: "Feil. 😢" }
+  },
+  el: {
+    name: "ギリシャ語",
+    messages: { correct: "Σωστό! 🎉", incorrect: "Λάθος. 😢" }
+  },
+  he: {
+    name: "ヘブライ語",
+    messages: { correct: "נכון! 🎉", incorrect: "שגוי. 😢" }
+  },
+  cs: {
+    name: "チェコ語",
+    messages: { correct: "Správně! 🎉", incorrect: "Špatně. 😢" }
+  },
+  ro: {
+    name: "ルーマニア語",
+    messages: { correct: "Corect! 🎉", incorrect: "Incorect. 😢" }
+  },
+  hu: {
+    name: "ハンガリー語",
+    messages: { correct: "Helyes! 🎉", incorrect: "Helytelen. 😢" }
+  },
+  id: {
+    name: "インドネシア語",
+    messages: { correct: "Benar! 🎉", incorrect: "Salah. 😢" }
+  },
+  ms: {
+    name: "マレー語",
+    messages: { correct: "Betul! 🎉", incorrect: "Salah. 😢" }
+  },
+  uk: {
+    name: "ウクライナ語",
+    messages: { correct: "Правильно! 🎉", incorrect: "Неправильно. 😢" }
+  }
 };
 
 function updateLanguage() {
   const selectedOption = $("#language-select").val();
 
-  selectedLanguage = languageMap[selectedOption] || "en";
+  selectedLanguage = languageData[selectedOption] ? selectedOption : "en";
 
-  // 選択された言語名の表示を更新
-  $("#selected-language").text(languageNames[selectedLanguage]);
+  $("#selected-language").text(languageData[selectedLanguage].name);
 }
 
-const languageSelect = $("#language-select");
-$.each(languageMap, function(value, code) {
-  const option = $("<option>").val(value).text(languageNames[code]);
+$.each(languageData, function (code, data) {
+  const option = $("<option>").val(code).text(data.name);
   languageSelect.append(option);
 });
 
