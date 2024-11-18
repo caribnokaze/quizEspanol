@@ -186,7 +186,7 @@ $(function () {
   // ページ読み込み時に初期表示を設定
   quizStartScreenVisible();
   // タイマーの選択肢に変更イベントを設定
-  $('input[name="timerChoice"]').each(function() {
+  $('input[name="timerChoice"]').each(function () {
     $(this).on("change", toggleTimerOptions);
   });
 
@@ -349,15 +349,29 @@ function playQuiz() {
   const quizType = $('input[name="quizType"]:checked').val(); // quizTypeを正しく取得
 
   let timerDuration = 0; //タイマーのリセット
+  let quizTimer;
+
+  window.addEventListener('countdownFinished', () => {
+    if (quizTimer.timerDisplay) {
+      quizTimer.timerDisplay.text("時間切れ！");  // 時間切れの表示
+    }
+    checkAnswer(false); // 不正解として次の問題に進む
+  });
+
   if (getTimerType() === "yes-timer") {
     // タイマーが「あり」の場合のみ、選択された時間を取得
     const timerSecondsElement = $('input[name="timerSeconds"]:checked');
     if (timerSecondsElement.length) {
       timerDuration = parseInt(timerSecondsElement.val())
-      timeLeft = timerDuration; //タイマーの初期化
-      startTimer();
+
+      // タイマーインスタンスの初期化とスタート
+      if (quizTimer) {
+        quizTimer.stop(); // 既存のタイマーを停止
+      }
+      quizTimer = new CountdownTimer(timerDuration);
+      quizTimer.start();
     } else {
-      console.error("タイマー秒数が選択されていません。")
+      console.error("タイマー秒数が選択されていません。");
     }
   };
 
@@ -456,7 +470,10 @@ function checkAnswer(isCorrect) {
   const result = $('#result');
 
   // タイマーを停止
-  clearInterval(timerInterval);
+  // clearInterval(timerInterval);
+  if (quizTimer) {
+    quizTimer.stop(); // クラスのインスタンスでタイマー停止
+  }
 
   totalQuestions++;
   answerCount++;
@@ -481,7 +498,11 @@ function checkAnswer(isCorrect) {
   if (totalQuestions < maxQuestions) {
     setTimeout(() => {
       playQuiz();
-      startTimer();  // 次の問題でタイマーを再スタート
+      // startTimer();  // 次の問題でタイマーを再スタート
+      if (quizTimer) {
+        quizTimer.timeLeft = quizTimer.initialSeconds; // 残り時間をリセット
+        quizTimer.start(); // 再スタート
+      }
     }, 2000);
   } else {
     // 正答率を表示
@@ -551,25 +572,70 @@ function loadQuizState() {
   }
 }
 
-function startTimer() {
-  const timerDisplay = $('#timer');  // IDを正確に指定
+// function startTimer() {
+//   const timerDisplay = $('#timer');  // IDを正確に指定
 
-  // タイマーをクリアしてから開始
-  clearInterval(timerInterval);
-  timerDisplay.show();
-  timerDisplay.text(timeLeft + " 秒");
+//   // タイマーをクリアしてから開始
+//   clearInterval(timerInterval);
+//   timerDisplay.show();
+//   timerDisplay.text(timeLeft + " 秒");
 
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    timerDisplay.text(timeLeft + " 秒");
+//   timerInterval = setInterval(() => {
+//     timeLeft--;
+//     timerDisplay.text(timeLeft + " 秒");
 
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      timerDisplay.text("時間切れ！");
-      // 時間切れのため自動で不正解として次の問題に進む
-      checkAnswer(false);
+//     if (timeLeft <= 0) {
+//       clearInterval(timerInterval);
+//       timerDisplay.text("時間切れ！");
+//       // 時間切れのため自動で不正解として次の問題に進む
+//       checkAnswer(false);
+//     }
+//   }, 1000);
+// }
+
+class CountdownTimer {
+  // コンストラクタで初期秒数を指定
+  constructor(seconds) {
+    this.initialSeconds = seconds; // 初期値の保存
+    this.timeLeft = seconds; // 現在の残り時間
+    this.timerInterval = null; // タイマーの管理用
+    this.timerDisplay = $('#timer');  // ここで表示用の要素を取得
+  }
+
+  start() {
+    this.stop();
+    this.updateDisplay(); // 初期表示を更新
+    this.timerInterval = setInterval(() => this.countdown(), 1000);
+  }
+
+  stop() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
     }
-  }, 1000);
+  }
+
+  countdown() {
+    if (this.timeLeft > 0) {
+      this.timeLeft--;
+      this.updateDisplay();
+    } else {
+      this.stop();
+      this.dispatchCountdownFinishedEvent();
+    }
+  }
+
+  updateDisplay() {
+    if (this.timerDisplay) {
+      this.timerDisplay.text(this.timeLeft + " 秒"); // 残り時間を表示
+    }
+  }
+
+  // カウントダウン終了時のイベント発行処理
+  dispatchCountdownFinishedEvent() {
+    const event = new CustomEvent('countdownFinished');
+    window.dispatchEvent(event); // グローバルでイベントを発行
+  }
 }
 
 
