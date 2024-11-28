@@ -182,6 +182,9 @@ function saveSettings() {
 }
 
 $(function () {
+  $("#start-button").on('click', function () {
+    startQuiz();
+  });
   // ページ読み込み時に初期表示を設定
   quizStartScreenVisible();
   // タイマーの選択肢に変更イベントを設定
