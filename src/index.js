@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 let correctAnswer = 0;
 let totalQuestions = 0;
 let correctAnswers = 0;
@@ -148,6 +150,8 @@ function updateLanguage() {
   selectedLanguage = languageData[selectedOption] ? selectedOption : "en";
 
   $("#selected-language").text(languageData[selectedLanguage].name);
+  // 設定を保存
+  localStorage.setItem("selectedLanguage", selectedLanguage);
 }
 
 $.each(languageData, function (code, data) {
@@ -185,8 +189,18 @@ $(function () {
   $("#start-button").on('click', function () {
     startQuiz();
   });
+  $("#replay-button").on('click', function () {
+    replayQuiz();
+  });
+  $("#slow-read-button").on('click', function () {
+    slowReplayQuiz();
+  });
+
   // ページ読み込み時に初期表示を設定
   quizStartScreenVisible();
+  $("#language-select").on('change', function () {
+    updateLanguage();
+  });
   // タイマーの選択肢に変更イベントを設定
   $('input[name="timerChoice"]').each(function () {
     $(this).on("change", toggleTimerOptions);

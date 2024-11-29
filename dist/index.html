@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Random Number Quiz in Spanish</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="jquery-3.7.1.min.js"></script>
   <link href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" rel="stylesheet" />
 </head>
 
@@ -40,7 +39,7 @@
     <h2>設定画面</h2>
     <div class="language-container">
       <label id="language-label" for="language-select" style="display: block;">【言語を選択してください】</label>
-      <select id="language-select" class="language-select" onchange="updateLanguage()">
+      <select id="language-select" class="language-select">
       </select>
     </div>
     <div class="number-input">
@@ -113,11 +112,8 @@
     <div id="quiz-content"></div>
     <!-- 結果を表示するエリア -->
     <p id="result"></p>
-    <!-- もう一度聞くボタンと次の質問ボタン -->
-    <button id="replay-button" onclick="replayQuiz()">もう一度聞く</button>
-    <button id="slow-read-button" onclick="slowReplayQuiz()">
-      ゆっくりもう一度聞く
-    </button>
+    <button id="replay-button">もう一度聞く</button>
+    <button id="slow-read-button">ゆっくりもう一度聞く</button>
   </div>
   <!-- 結果コンテナ -->
   <div id="result-container" style="display: none;">
