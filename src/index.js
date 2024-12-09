@@ -185,7 +185,10 @@ function saveSettings() {
   quizStartScreenVisible()
 }
 
-$(function () {
+
+$(function () {  
+  let selectedLanguage = "en";
+
   $("#start-button").on('click', function () {
     startQuiz();
   });
@@ -195,12 +198,10 @@ $(function () {
   $("#slow-read-button").on('click', function () {
     slowReplayQuiz();
   });
-
-  // ページ読み込み時に初期表示を設定
-  quizStartScreenVisible();
   $("#language-select").on('change', function () {
     updateLanguage();
   });
+
   // タイマーの選択肢に変更イベントを設定
   $('input[name="timerChoice"]').each(function () {
     $(this).on("change", toggleTimerOptions);
@@ -227,6 +228,7 @@ $(function () {
   }
 
   toggleTimerOptions(); // タイマーオプションの初期表示を設定
+  quizStartScreenVisible();
 });
 
 function toggleTimerOptions() {
@@ -390,6 +392,7 @@ function quizStartScreenVisible() {
   const maxNumber = parseInt($("#max-number").val(), 10);
   $("#min-input-number").text(isNaN(minNumber) ? "未設定" : minNumber);
   $("#max-input-number").text(isNaN(maxNumber) ? "未設定" : maxNumber);
+  
 }
 
 // クイズ画面に切り替える関数
