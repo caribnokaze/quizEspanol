@@ -147,7 +147,7 @@ const languageData = {
 function updateLanguage() {
   const selectedOption = $("#language-select").val();
 
-  selectedLanguage = languageData[selectedOption] ? selectedOption : "en";
+  const selectedLanguage = languageData[selectedOption] ? selectedOption : "en";
 
   $("#selected-language").text(languageData[selectedLanguage].name);
   // 設定を保存
