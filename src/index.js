@@ -144,20 +144,16 @@ const languageData = {
   }
 };
 
-function updateLanguage() {
-  const selectedOption = $("#language-select").val();
-
+function updateLanguage(selectedOption) {
   const selectedLanguage = languageData[selectedOption] ? selectedOption : "en";
+  console.log("選択された言語:", selectedLanguage, languageData[selectedLanguage]);
 
+  // 言語表示を更新
   $("#selected-language").text(languageData[selectedLanguage].name);
+
   // 設定を保存
   localStorage.setItem("selectedLanguage", selectedLanguage);
 }
-
-$.each(languageData, function (code, data) {
-  const option = $("<option>").val(code).text(data.name);
-  languageSelect.append(option);
-});
 
 $("#save-button").on("click", saveSettings);
 
@@ -165,6 +161,9 @@ function saveSettings() {
   const quizType = $('input[name="quizType"]:checked').val();
   const timerType = getTimerType();
   const timerSeconds = $('input[name="timerSeconds"]:checked').val();
+  const selectedLanguage = $("#language-select").val();
+  const minNumber = $("#min-number").val();
+  const maxNumber = $("#max-number").val();
 
   // タイマーが「あり」を選択しているが秒数が選択されていない場合
   if (timerType === "yes-timer" && !timerSeconds) {
@@ -181,13 +180,39 @@ function saveSettings() {
   localStorage.setItem("selectedQuizType", quizType);
   localStorage.setItem("timerType", timerType);
   localStorage.setItem("timerSeconds", timerSeconds);
+  localStorage.setItem("selectedLanguage", selectedLanguage);
+  localStorage.setItem("minNumber", minNumber);
+  localStorage.setItem("maxNumber", maxNumber);
 
   quizStartScreenVisible()
 }
 
+$(function () {
+  // 言語オプションの設定
+  $.each(languageData, function (code, data) {
+    const option = $("<option>").val(code).text(data.name);
+    $("#language-select").append(option);
+  });
 
-$(function () {  
-  let selectedLanguage = "en";
+  // 保存された設定を取得
+  const savedQuizType = localStorage.getItem("selectedQuizType");
+  const savedTimerType = localStorage.getItem("timerType");
+  const savedTimerSeconds = localStorage.getItem("timerSeconds");
+  const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
+  const savedMinNumber = localStorage.getItem("minNumber");
+  const savedMaxNumber = localStorage.getItem("maxNumber");
+
+  // 言語セレクトボックスに保存された言語を設定
+  $("#language-select").val(savedLanguage);
+
+  // 言語を更新
+  updateLanguage(savedLanguage);
+  if (savedMinNumber) {
+    $("#min-number").val(savedMinNumber);
+  }
+  if (savedMaxNumber) {
+    $("#max-number").val(savedMaxNumber);
+  }
 
   $("#start-button").on('click', function () {
     startQuiz();
@@ -198,19 +223,11 @@ $(function () {
   $("#slow-read-button").on('click', function () {
     slowReplayQuiz();
   });
-  $("#language-select").on('change', function () {
-    updateLanguage();
-  });
 
   // タイマーの選択肢に変更イベントを設定
   $('input[name="timerChoice"]').each(function () {
     $(this).on("change", toggleTimerOptions);
   });
-
-  // 保存されたクイズタイプを取得
-  const savedQuizType = localStorage.getItem("selectedQuizType");
-  const savedTimerType = localStorage.getItem("timerType");
-  const savedTimerSeconds = localStorage.getItem("timerSeconds");
 
   if (savedQuizType) {
     $('input[name="quizType"][value="' + savedQuizType + '"]').prop('checked', true);
@@ -220,7 +237,6 @@ $(function () {
     $('input[name="timerChoice"][value="' + savedTimerType + '"]').prop('checked', true);
   }
 
-  // 秒数が保存されていればその秒数を、なければデフォルトで5秒を選択
   if (savedTimerSeconds) {
     $('input[name="timerSeconds"][value="' + savedTimerSeconds + '"]').prop('checked', true);
   } else {
@@ -229,6 +245,12 @@ $(function () {
 
   toggleTimerOptions(); // タイマーオプションの初期表示を設定
   quizStartScreenVisible();
+
+  // 言語変更時の処理
+  $("#language-select").on('change', function () {
+    const selectedLanguage = $(this).val();
+    updateLanguage(selectedLanguage);
+  });
 });
 
 function toggleTimerOptions() {
@@ -401,7 +423,6 @@ function quizScreenVisible() {
   $("#quiz-container").show();
   $("#start-page-container").hide();
   $("#result-container").hide();
-
   $("#answer-count").parent().show(); // 現在の回答数を表示
   $("#quiz-content").show();          // クイズ内容を表示
   $("#replay-button").show();         // もう一度聞くボタンを表示
@@ -413,7 +434,6 @@ function quizResultScreenVisible() {
   $("#setting-container").hide();
   $("#start-page-container").hide();
   $("#result-container").show();
-
   $("#quiz-container").show();
   $("#answer-count").parent().hide(); // 現在の回答数を非表示
   $("#timer").hide();                 // タイマーを非表示
