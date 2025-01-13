@@ -1,6 +1,8 @@
-import { startQuiz, replayQuiz, slowReplayQuiz } from './quiz.js';
+import $ from 'jquery';
+import { languageData } from './languages.js';
+import { quizStartScreenVisible } from './changeScreen.js';
 import { toggleTimerOptions } from './timer.js';
-import { updateLanguage } from './languages.js';
+import { replayQuiz, slowReplayQuiz, startQuiz } from './quiz.js';
 
 export function initializeApp() {
     $(function () {
@@ -68,4 +70,15 @@ export function initializeApp() {
             updateLanguage(selectedLanguage);
         });
     });
+}
+
+export function updateLanguage(selectedOption) {
+    const selectedLanguage = languageData[selectedOption] ? selectedOption : "en";
+    console.log("選択された言語:", selectedLanguage, languageData[selectedLanguage]);
+
+    // 言語表示を更新
+    $("#selected-language").text(languageData[selectedLanguage].name);
+
+    // 設定を保存
+    localStorage.setItem("selectedLanguage", selectedLanguage);
 }
