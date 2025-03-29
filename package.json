@@ -1,0 +1,15 @@
+{
+  "name": "quizEspanol",
+  "version": "1.0.0",
+  "repository": "git@github.com:caribnokaze/quizEspanol.git",
+  "author": "hirohisatanaka <caribbean.ocean.cafe@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1"
+  }
+}
